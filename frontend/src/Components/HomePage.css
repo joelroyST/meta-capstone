@@ -1,0 +1,73 @@
+.homepage {
+
+}
+
+.middle-homepage {
+    padding: 0 100px;
+}
+
+.user-profile-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+}
+
+.hamburg {
+    font-size: 50px;
+    margin: 0;
+}
+
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    padding: 40px;
+}
+
+.favorite-livescores{
+    margin: 0 0;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 80vw;
+    text-align: center;
+}
+
+.recommended-teams-sports-title {
+    border: 2px solid black;
+    text-align: center;
+    height: 80px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.recommended-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.recommended-card {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 200px;
+}
+
+.trending-news-card {
+    border: 2px solid black;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+}
