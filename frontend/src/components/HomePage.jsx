@@ -27,9 +27,8 @@ function HomePage() {
         <div className="trending-news">
           <div className="trending-news-card">Popular/Trending Sports News</div>
           <div className="trending-news-card">Popular/Trending Sports News</div>
-          <div className="trending-news-card">
-            Popular/Trending Sports News!!!!
-          </div>
+          <div className="trending-news-card">Popular/Trending Sports News</div>
+          <div className="trending-news-card">Popular/Trending Sports News</div>
         </div>
       </div>
     </div>
