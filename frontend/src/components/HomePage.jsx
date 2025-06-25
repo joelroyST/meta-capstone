@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom"
 import DefaultProfilePic from "../assets/defaultpfp.svg";
 import "./HomePage.css";
 import AccountModal from "./AccountModal";
 
 function HomePage() {
   const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -13,6 +16,15 @@ function HomePage() {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
+  const handleProfileClick = () => {
+    const loggedIn = false;
+    if (loggedIn) {
+      handleOpenModal();
+    } else {
+      navigate("/login")
+    }
+  }
 
   return (
     <div className="homepage">
@@ -24,7 +36,7 @@ function HomePage() {
         <img
           className="user-profile-icon"
           src={DefaultProfilePic}
-          onClick={handleOpenModal}></img>
+          onClick={handleProfileClick}></img>
       </div>
       <div className="middle-homepage">
         <section className="recommended-section">
@@ -46,6 +58,7 @@ function HomePage() {
         </div>
       </div>
       {openModal && <AccountModal setOpenModal={setOpenModal} />}
+
     </div>
   );
 }
