@@ -17,15 +17,6 @@ function HomePage() {
     setOpenModal(false);
   };
 
-  const handleProfileClick = () => {
-    const loggedIn = false;
-    if (loggedIn) {
-      handleOpenModal();
-    } else {
-      navigate("/login")
-    }
-  }
-
   return (
     <div className="homepage">
       <div className="top-section">
@@ -36,13 +27,14 @@ function HomePage() {
         <img
           className="user-profile-icon"
           src={DefaultProfilePic}
-          onClick={handleProfileClick}></img>
+          onClick={handleOpenModal}></img>
       </div>
       <div className="middle-homepage">
         <section className="recommended-section">
           <h3 className="recommended-teams-sports-title">
             Recommended Sports/Team Cards
           </h3>
+          {/* TODO make each card able to redirect the user to the specified page */}
           <div className="recommended-cards-grid">
             <div className="recommended-card">Team/Sport #1</div>
             <div className="recommended-card">Team/Sport #2</div>
