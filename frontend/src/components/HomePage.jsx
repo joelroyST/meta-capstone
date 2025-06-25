@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import DefaultProfilePic from "../assets/defaultpfp.svg";
 import "./HomePage.css";
+import AccountModal from "./AccountModal";
 
 function HomePage() {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   return (
     <div className="homepage">
       <div className="top-section">
@@ -10,7 +21,10 @@ function HomePage() {
         <section className="favorite-livescores">
           <h2>Favorited Sports/Teams Live Scores</h2>
         </section>
-        <img className="user-profile-icon" src={DefaultProfilePic}></img>
+        <img
+          className="user-profile-icon"
+          src={DefaultProfilePic}
+          onClick={handleOpenModal}></img>
       </div>
       <div className="middle-homepage">
         <section className="recommended-section">
@@ -31,6 +45,7 @@ function HomePage() {
           <div className="trending-news-card">Popular/Trending Sports News</div>
         </div>
       </div>
+      {openModal && <AccountModal setOpenModal={setOpenModal} />}
     </div>
   );
 }
