@@ -13,3 +13,26 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String           @unique
+  password        String
+  favoriteTeams   FavoriteTeam[]
+  favoritePlayers FavoritePlayer[]
+}
+
+model FavoriteTeam {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  teamId String // This is from the id the api assigns
+}
+
+model FavoritePlayer {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  playerId String // This is from the id the api assigns
+}
