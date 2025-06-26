@@ -1,15 +1,19 @@
-.homepage {
 
+
+.homepage {
+    width: 100vw;
+    height: 100vh;
 }
 
 .middle-homepage {
-    padding: 0 100px;
+    padding: 0;
 }
 
 .user-profile-icon {
-    width: 40px;
-    height: 40px;
-    margin: 0;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    cursor: pointer;
 }
 
 .hamburg {
@@ -19,17 +23,17 @@
 
 .top-section {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 999;
-    padding: 40px;
+    padding: 10px;
 }
 
 .favorite-livescores{
     margin: 0 0;
-    padding: 10px;
+    padding: 40px;
     border: 2px solid black;
     border-radius: 10px;
     width: 80vw;
@@ -50,8 +54,25 @@
 .recommended-cards-grid {
     display: grid;
     grid-template-columns: repeat(2,1fr);
-    gap: 10px;
-    margin-top: 10px;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.recommended-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .recommended-cards-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .recommended-card {
+        max-width: 100%;
+    }
 }
 
 .recommended-card {
@@ -59,10 +80,13 @@
     border-radius: 10px;
     padding: 20px;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
     text-align: center;
     height: 200px;
+    width: 275px;
+    max-width: 400px;
 }
 
 .trending-news-card {

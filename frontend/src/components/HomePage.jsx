@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom"
 import DefaultProfilePic from "../assets/defaultpfp.svg";
 import "./HomePage.css";
 import AccountModal from "./AccountModal";
 
 function HomePage() {
   const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -31,6 +34,7 @@ function HomePage() {
           <h3 className="recommended-teams-sports-title">
             Recommended Sports/Team Cards
           </h3>
+          {/* TODO make each card able to redirect the user to the specified page */}
           <div className="recommended-cards-grid">
             <div className="recommended-card">Team/Sport #1</div>
             <div className="recommended-card">Team/Sport #2</div>
@@ -46,6 +50,7 @@ function HomePage() {
         </div>
       </div>
       {openModal && <AccountModal setOpenModal={setOpenModal} />}
+
     </div>
   );
 }
