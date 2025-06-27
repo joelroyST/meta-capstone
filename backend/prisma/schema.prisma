@@ -15,57 +15,59 @@ datasource db {
 }
 
 model User {
-  id              Int              @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   name            String
-  email           String           @unique
-  password        String
-  favoriteTeams   Team[] 
+  email           String   @unique
+  googleId        String
+  facebookId      String
+  provider        String
+  favoriteTeams   Team[]
   favoritePlayers Player[]
 }
 
 model Team {
-  id Int @id @default(autoincrement())
-  teamId String // This is from the id the api assigns
-  players Player[]
-  city String
+  id       Int      @id @default(autoincrement())
+  teamId   String // This is from the id the api assigns
+  players  Player[]
+  city     String
   nickName String
   confName String
-  User User[]
+  User     User[]
 }
 
 model Player {
-  id Int @id @default(autoincrement())
-  playerId Int
-  teamId Int
+  id        Int    @id @default(autoincrement())
+  playerId  Int
+  teamId    Int
   firstName String
-  lastName String
-  User User[]
-  Team Team[]
+  lastName  String
+  teams     Team[]
+  User      User[]
 }
 
-model PlayerStatistics {
-  id Int @id @default(autoincrement())
-  gameId String
-  teamId String
-  points Int
-  position String
-  minPlayed String
-  fgm Int
-  fga Float
-  ftm Int
-  fta Int
-  ftp Float
-  tpm Int
-  tpa Int
-  tpp Float
-  offReb Int
-  debReb Int
-  totReb Int
-  assists Int
+model PlayerStatisticsPerGame {
+  id            Int    @id @default(autoincrement())
+  gameId        String
+  teamId        String
+  points        Int
+  position      String
+  minPlayed     String
+  fgm           Int
+  fga           Float
+  ftm           Int
+  fta           Int
+  ftp           Float
+  tpm           Int
+  tpa           Int
+  tpp           Float
+  offReb        Int
+  debReb        Int
+  totReb        Int
+  assists       Int
   personalFouls Int
-  steals Int
-  turnovers Int
-  blocks Int
-  plusMinus Int
-  playerId Int
+  steals        Int
+  turnovers     Int
+  blocks        Int
+  plusMinus     Int
+  playerId      Int
 }
