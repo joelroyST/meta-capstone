@@ -19,20 +19,53 @@ model User {
   name            String
   email           String           @unique
   password        String
-  favoriteTeams   FavoriteTeam[]
-  favoritePlayers FavoritePlayer[]
+  favoriteTeams   Team[] 
+  favoritePlayers Player[]
 }
 
-model FavoriteTeam {
+model Team {
   id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id])
-  userId Int
   teamId String // This is from the id the api assigns
+  players Player[]
+  city String
+  nickName String
+  confName String
+  User User[]
 }
 
-model FavoritePlayer {
+model Player {
   id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  playerId String // This is from the id the api assigns
+  playerId Int
+  teamId Int
+  firstName String
+  lastName String
+  User User[]
+  Team Team[]
+}
+
+model PlayerStatistics {
+  id Int @id @default(autoincrement())
+  gameId String
+  teamId String
+  points Int
+  position String
+  minPlayed String
+  fgm Int
+  fga Float
+  ftm Int
+  fta Int
+  ftp Float
+  tpm Int
+  tpa Int
+  tpp Float
+  offReb Int
+  debReb Int
+  totReb Int
+  assists Int
+  personalFouls Int
+  steals Int
+  turnovers Int
+  blocks Int
+  plusMinus Int
+  playerId Int
 }
