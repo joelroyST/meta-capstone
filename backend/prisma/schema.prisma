@@ -25,12 +25,12 @@ model User {
 }
 
 model Team {
-  teamId   String   @id // This is from the id the api assigns
-  players  Player[] @relation(fields: [teamId], references: [playerId])
+  id       String   @id // This is from the id the api assigns
+  players  Player[]
   city     String
   nickName String
   confName String
-  User     User[]
+  User     User[] // Only needed for compilation
 }
 
 model PlayerStatisticsPerGame {
@@ -58,15 +58,7 @@ model PlayerStatisticsPerGame {
   blocks        Int
   plusMinus     Int
   playerId      Int
-}
-
-model FantasyTeam {
-  userId       Int
-  leagueId     Int
-  name         String
-  players      Player[]
-
-  @@id([userId, leagueId])
+  player        Player @relation(fields: [playerId], references: [playerId])
 }
 
 model League {
@@ -76,13 +68,11 @@ model League {
 }
 
 model Transactions {
-  id               Int         @id @default(autoincrement())
+  id               Int    @id @default(autoincrement())
   playersFromTeamA Int[]
   playersFromTeamB Int[]
-  fantasyTeamA     FantasyTeam 
   userA            Int
   leagueA          Int
-  fantasyTeamB     FantasyTeam 
   userB            Int
   leagueB          Int
   transactionType  String
@@ -90,14 +80,21 @@ model Transactions {
 }
 
 model Player {
-  playerId       Int           @id
-  teamId         Int
-  firstName      String
-  lastName       String
-  teams          Team[]
-  fantasyTeams   FantasyTeam[]
-  User           User[]
-  value          Int
+  playerId  Int                       @id
+  firstName String
+  lastName  String
+  teamId    String
+  team      Team                      @relation(fields: [teamId], references: [id])
+  User      User[]
+  value     Int
+  stats     PlayerStatisticsPerGame[]
 }
 
-// FantasyTeam @relation("FantasyTeamA", fields: [fantasyTeamAUserId, fantasyTeamALeagueId], references: [userId,leagueId])
+model FantasyTeam {
+  userId    Int
+  leagueId  Int
+  name      String
+  playerIds Int[]
+
+  @@id([userId, leagueId])
+}
