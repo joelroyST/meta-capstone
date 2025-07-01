@@ -16,31 +16,21 @@ datasource db {
 model User {
   id              Int      @id @default(autoincrement())
   name            String
-  email           String?   @unique
+  email           String?  @unique
   facebookId      String   @unique
   provider        String
   favoriteTeams   Team[]
   favoritePlayers Player[]
+  leagues         League[]
 }
 
 model Team {
-  id       Int      @id @default(autoincrement())
-  teamId   String // This is from the id the api assigns
-  players  Player[]
+  teamId   String   @id // This is from the id the api assigns
+  players  Player[] @relation(fields: [teamId], references: [playerId])
   city     String
   nickName String
   confName String
   User     User[]
-}
-
-model Player {
-  id        Int    @id @default(autoincrement())
-  playerId  Int
-  teamId    Int
-  firstName String
-  lastName  String
-  teams     Team[]
-  User      User[]
 }
 
 model PlayerStatisticsPerGame {
@@ -69,3 +59,45 @@ model PlayerStatisticsPerGame {
   plusMinus     Int
   playerId      Int
 }
+
+model FantasyTeam {
+  userId       Int
+  leagueId     Int
+  name         String
+  players      Player[]
+
+  @@id([userId, leagueId])
+}
+
+model League {
+  leagueId Int    @id
+  name     String
+  users    User[]
+}
+
+model Transactions {
+  id               Int         @id @default(autoincrement())
+  playersFromTeamA Int[]
+  playersFromTeamB Int[]
+  fantasyTeamA     FantasyTeam 
+  userA            Int
+  leagueA          Int
+  fantasyTeamB     FantasyTeam 
+  userB            Int
+  leagueB          Int
+  transactionType  String
+  status           String
+}
+
+model Player {
+  playerId       Int           @id
+  teamId         Int
+  firstName      String
+  lastName       String
+  teams          Team[]
+  fantasyTeams   FantasyTeam[]
+  User           User[]
+  value          Int
+}
+
+// FantasyTeam @relation("FantasyTeamA", fields: [fantasyTeamAUserId, fantasyTeamALeagueId], references: [userId,leagueId])
