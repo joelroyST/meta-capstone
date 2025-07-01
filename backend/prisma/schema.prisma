@@ -16,9 +16,8 @@ datasource db {
 model User {
   id              Int      @id @default(autoincrement())
   name            String
-  email           String   @unique
-  googleId        String
-  facebookId      String
+  email           String?   @unique
+  facebookId      String   @unique
   provider        String
   favoriteTeams   Team[]
   favoritePlayers Player[]

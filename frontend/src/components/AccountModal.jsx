@@ -6,14 +6,27 @@ import { useNavigate } from "react-router-dom";
 const AccountModal = ({ setOpenModal }) => {
   const navigate = useNavigate();
 
-  const handleProfileClick = () => {
-    const loggedIn = false;
-    if (loggedIn) {
-      handleOpenModal();
-    } else {
-      navigate("/login");
-    }
+  const handleLogin = () => {
+    navigate("/login");
+    setOpenModal(false);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("isRemembered");
+    localStorage.removeItem("userID");
+    navigate("/");
+    setOpenModal(false);
+  };
+
+  // const handleProfileClick = () => {
+  //   const loggedIn = false;
+  //   if (loggedIn) {
+  //     handleOpenModal();
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // };
 
   return (
     <div className="modal-overlay" onClick={() => setOpenModal(false)}>
@@ -27,8 +40,8 @@ const AccountModal = ({ setOpenModal }) => {
           </button>
         </div>
         <div className="modal-body">
-          <button onClick={() => handleProfileClick()}>Login</button>
-          <button>Logout</button>
+          <button onClick={handleLogin}>Login</button>
+          <button onClick={handleLogout}>Logout</button>
           <button>Settings</button>
         </div>
         <div className="profile-section">

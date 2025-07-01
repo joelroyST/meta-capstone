@@ -15,12 +15,13 @@ router.get(
 
 // Facebook OAuth callback
 router.get(
-  "/callback",
+  "/facebook/callback",
   passport.authenticate("facebook", {
     session: false,
     failureRedirect: `http://localhost:5173/login-failed`,
   }),
   function (req, res) {
+    // Create a JWT
     const token = jwt.sign(
       { userId: req.user.id, email: req.user.email },
       process.env.JWT_SECRET,
@@ -28,7 +29,8 @@ router.get(
         expiresIn: "2d",
       }
     );
-    res.redirect(`http://localhost:5173/auth/callback?token=${token}`);
+    // Bring them back to frontend with token
+    res.redirect(`http://localhost:5173/?token=${token}`);
   }
 );
 

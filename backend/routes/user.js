@@ -24,6 +24,7 @@ function authenticateToken(req, res, next) {
   });
 }
 
+// Get the current user profile
 router.get("/me", authenticateToken, async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
