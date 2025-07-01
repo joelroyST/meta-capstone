@@ -3,10 +3,40 @@ import {useNavigate} from "react-router-dom"
 import DefaultProfilePic from "../assets/defaultpfp.svg";
 import "./HomePage.css";
 import AccountModal from "./AccountModal";
+import { useEffect } from "react";
 
 function HomePage() {
   const [openModal, setOpenModal] = useState(false);
-  const navigate = useNavigate();
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      return;
+    }
+
+    async function fetchUserData() {
+      try {
+        const res = await fetch("http://localhost:5000/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        })
+        const data = await res.json();
+
+        if(data.user) {
+          setUser(data.user);
+          localStorage.setItem("userID", data.user.id)
+        } else {
+          setUser(null)
+        }
+      }
+      catch {
+        setUser(null)
+      }
+    }
+    fetchUserData();
+  },[])
 
 
   const handleOpenModal = () => {

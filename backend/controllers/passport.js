@@ -8,17 +8,20 @@ passport.use(
   new FacebookStrategy(
     {
       clientID: process.env.FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      clientSecret: process.env.FACEBOOK_SECRET_KEY,
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
     },
     async function (accessToken, refreshToken, profile, cb) {
       try {
         const facebookId = profile.id;
-
+        console.log(facebookId || "hello");
+        
+        // Check if user exists in database
         let user = await prisma.user.findUnique({
           where: { facebookId },
         });
 
+        // If user doesn't exist, create a new user
         if (!user) {
           user = await prisma.user.create({
             data: {
@@ -32,6 +35,7 @@ passport.use(
             },
           });
         }
+        // Complete the passport login process
         return cb(null, user);
       } catch (error) {
         console.error(error);
