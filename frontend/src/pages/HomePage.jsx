@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DefaultProfilePic from "../assets/defaultpfp.svg";
 import "./HomePage.css";
 import AccountModal from "../Components/AccountModal";
 import { useEffect } from "react";
 import SidebarModal from "../components/SideBarModal";
+import TopBar from "../components/TopBar";
 
 function HomePage() {
   const [openModal, setOpenModal] = useState(false);
@@ -49,16 +49,7 @@ function HomePage() {
 
   return (
     <div className="homepage">
-      <div className="top-section">
-        <div className="hamburg" onClick={() => setOpenSidebar((prev) => !prev)}>☰</div>
-        <section className="favorite-livescores">
-          <h2>Favorited Sports/Teams Live Scores</h2>
-        </section>
-        <img
-          className="user-profile-icon"
-          src={DefaultProfilePic}
-          onClick={handleOpenModal}></img>
-      </div>
+      <TopBar onHamburgClick={() => setOpenSidebar((prev) => (!prev))} onProfileClick={handleOpenModal}/>
       <div className="middle-homepage">
         <section className="recommended-section">
           <h3 className="recommended-teams-sports-title">
