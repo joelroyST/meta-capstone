@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./FantasyBasketball.css";
+import TopBar from "../components/TopBar";
+import AccountModal from "../Components/AccountModal";
+import SidebarModal from "../components/SideBarModal";
 
 const FantasyBasketball = () => {
   const [user, setUser] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -34,6 +39,12 @@ const FantasyBasketball = () => {
 
   return (
     <div className="fantasy-basketball-page">
+      <TopBar
+        onHamburgClick={() => setOpenSidebar((prev) => !prev)}
+        onProfileClick={() => setOpenModal(true)}
+      />
+            {openModal && <AccountModal setOpenModal={setOpenModal} />}
+      {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
       <h1 className="fantasy-main-title">Welcome to Fantasy Basketball!</h1>
       <h4 className="fantasy-basketball-instructions">
         On this page, you will be able to add, drop, or trade players onto your

@@ -9,6 +9,13 @@ function SidebarModal({setOpenSidebar}) {
         setOpenSidebar(false);
     }
 
+    const handleHomeClick = () => {
+        if (window.location.pathname !== "/") {
+            navigate("/")
+        }
+        setOpenSidebar(false);
+    }
+
     const handleNavigateFantasyBasketball = () => {
         navigate('/fantasy-basketball');
         setOpenSidebar(false);
@@ -17,6 +24,7 @@ function SidebarModal({setOpenSidebar}) {
   return (
     <div className='sidebar-modal-overlay' onClick={handleClose}>
         <div className='sidebar-modal open' onClick={(event) => event.stopPropagation()}>
+            <button onClick={handleHomeClick} className='sidebar-title'>Home</button>
             <h2 className='sidebar-title1' onClick={handleNavigateFantasyBasketball}>Fantasy Basketball</h2>
             <h2 className='sidebar-title'>Hot News</h2>
             <h2 className='sidebar-title'>NBA Teams</h2>
