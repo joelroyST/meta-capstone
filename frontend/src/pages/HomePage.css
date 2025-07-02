@@ -12,13 +12,13 @@
 .user-profile-icon {
     width: 50px;
     height: 50px;
-    margin: 5px;
+    margin: 0 15px;
     cursor: pointer;
 }
 
 .hamburg {
     font-size: 50px;
-    margin: 0;
+    margin: 0 15px;
 }
 
 .top-section {
