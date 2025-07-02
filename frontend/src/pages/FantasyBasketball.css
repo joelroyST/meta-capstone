@@ -1,0 +1,35 @@
+.fantasy-basketball-page {
+    padding: 20px;
+}
+
+.fantasy-user-roster {
+    background-color: rgb(231, 230, 230);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.roster-player-container {
+    padding: 10px 0;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding: 16px;
+}
+
+.fantasy-main-title {
+    display: flex;
+    justify-content: center;
+}
+
+.fantasy-basketball-instructions {
+    background-color: lavender;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 80px;
+}
+
+.roster-container {
+
+}

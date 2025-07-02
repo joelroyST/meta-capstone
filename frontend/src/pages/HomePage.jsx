@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import DefaultProfilePic from "../assets/defaultpfp.svg";
 import "./HomePage.css";
-import AccountModal from "./AccountModal";
+import AccountModal from "../Components/AccountModal";
 import { useEffect } from "react";
+import SidebarModal from "../components/SideBarModal";
 
 function HomePage() {
   const [openModal, setOpenModal] = useState(false);
-  const [user, setUser] = useState(null)
+  const [openSidebar, setOpenSidebar] = useState(false)
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (!token) {
       return;
     }
@@ -20,24 +22,22 @@ function HomePage() {
         const res = await fetch("http://localhost:5000/user/me", {
           headers: {
             Authorization: `Bearer ${token}`,
-          }
-        })
+          },
+        });
         const data = await res.json();
 
-        if(data.user) {
+        if (data.user) {
           setUser(data.user);
-          localStorage.setItem("userID", data.user.id)
+          localStorage.setItem("userID", data.user.id);
         } else {
-          setUser(null)
+          setUser(null);
         }
-      }
-      catch {
-        setUser(null)
+      } catch {
+        setUser(null);
       }
     }
     fetchUserData();
-  },[])
-
+  }, []);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -50,7 +50,7 @@ function HomePage() {
   return (
     <div className="homepage">
       <div className="top-section">
-        <div className="hamburg">☰</div>
+        <div className="hamburg" onClick={() => setOpenSidebar((prev) => !prev)}>☰</div>
         <section className="favorite-livescores">
           <h2>Favorited Sports/Teams Live Scores</h2>
         </section>
@@ -80,7 +80,7 @@ function HomePage() {
         </div>
       </div>
       {openModal && <AccountModal setOpenModal={setOpenModal} />}
-
+      {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
     </div>
   );
 }
