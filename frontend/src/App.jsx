@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/HomePage";
-import LoginSignup from "./Components/LoginSignup";
+import LoginSignup from "./components/LoginSignup";
 import FantasyBasketball from "./pages/FantasyBasketball";
 
 function App() {
