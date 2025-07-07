@@ -19,15 +19,6 @@ const AccountModal = ({ setOpenModal }) => {
     setOpenModal(false);
   };
 
-  // const handleProfileClick = () => {
-  //   const loggedIn = false;
-  //   if (loggedIn) {
-  //     handleOpenModal();
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // };
-
   return (
     <div className="modal-overlay" onClick={() => setOpenModal(false)}>
       <div
