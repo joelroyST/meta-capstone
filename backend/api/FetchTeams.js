@@ -2,10 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export async function fetchTeams() {
-  const res = await fetch("emptyplaceholder.com", {
+  const res = await fetch("https://api-nba-v1.p.rapidapi.com/teams", {
     headers: {
       "rapidapi-key": process.env.RAPIDAPI_KEY,
-      "rapidapi-host": "examplehost.com",
+      "rapidapi-host": process.env.RAPIDAPI_HOST,
     },
   });
   if (!res.ok) {
