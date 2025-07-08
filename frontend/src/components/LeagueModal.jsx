@@ -23,7 +23,7 @@ const LeagueModal = ({ leagues, onClose }) => {
           className="league-search-input"></input>
           <div className="leagues-list">
             {filteredLeagues.length > 0 ? (
-                filteredLeagues.map((length) => (
+                filteredLeagues.map((league) => (
                     <div key={league.leagueId} className="league-card">{league.name}</div>
                 ))
             ) : (

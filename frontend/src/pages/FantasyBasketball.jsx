@@ -80,8 +80,15 @@ const FantasyBasketball = () => {
             type="text"
             placeholder="Enter new league name!"
             value={leagueName}
-            onChange={(event) => setLeagueName(event.target.value)}></input>
-          <button onClick={handleCreateLeague}>Create New League</button>
+            onChange={(event) => setLeagueName(event.target.value)}
+            onClick={(event) => event.stopPropagation()}></input>
+          <button
+            onClick={(event) => {
+              handleCreateLeague();
+              event.stopPropagation();
+            }}>
+            Create New League
+          </button>
         </div>
         <div className="league-container">
           {leagues.length === 0 ? (
