@@ -1,5 +1,26 @@
 .fantasy-basketball-page {
     padding: 20px;
+    min-height: 100vh;
+    background: linear-gradient(rgb(192, 74, 192) 30%, rgb(49, 214, 74) 100%);
+}
+
+.fantasy-league-roster {
+    background-color: rgb(231, 230, 230);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.roster-league-container {
+    padding: 10px 0;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding: 16px;
+}
+
+.league-container {
+    cursor: pointer;
 }
 
 .fantasy-user-roster {

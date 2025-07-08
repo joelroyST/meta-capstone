@@ -1,0 +1,50 @@
+.league-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.league-modal-content {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    width: 80vw;
+    min-width: 300px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.league-search-input {
+    width: 100%;
+    padding: 8px;
+    margin: 12px 0;
+    border: 1px solid lightgray;
+    border-radius: 15px;
+}
+
+.league-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.league-card {
+    padding: 10px;
+    margin: 10px;
+    background-color: lavender;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.league-card:hover {
+    background-color: rgb(150, 150, 5);
+}
