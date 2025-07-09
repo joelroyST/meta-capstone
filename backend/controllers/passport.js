@@ -1,6 +1,6 @@
 const passport = require("passport");
 const FacebookStrategy = require("passport-facebook").Strategy;
-const {PrismaClient} = require("@prisma/client");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 require("dotenv").config();
 
@@ -14,7 +14,8 @@ passport.use(
     async function (accessToken, refreshToken, profile, cb) {
       try {
         const facebookId = profile.id;
-        
+        console.log(profile);
+
         // Check if user exists in database
         let user = await prisma.user.findUnique({
           where: { facebookId },
@@ -24,7 +25,7 @@ passport.use(
         if (!user) {
           user = await prisma.user.create({
             data: {
-              name: `${profile.name.givenName} ${profile.name.familyName}`,
+              name: `${profile.name.split(" ")[0]} ${profile.name.split(" ").slice(1).join(" ")}`,
               email:
                 profile.emails && profile.emails[0]
                   ? profile.emails[0].value

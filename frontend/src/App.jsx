@@ -4,6 +4,7 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import LoginSignup from "./components/LoginSignup";
 import FantasyBasketball from "./pages/FantasyBasketball";
+import LeaguePage from "./pages/LeaguePage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginSignup />} />
         <Route path="/fantasy-basketball" element={<FantasyBasketball />} />
+        <Route path="/league/:userId/:leagueId" element={<LeaguePage />} />
       </Routes>
     </Router>
   );

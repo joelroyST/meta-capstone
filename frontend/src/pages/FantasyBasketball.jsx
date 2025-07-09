@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./FantasyBasketball.css";
 import TopBar from "../components/TopBar";
 import AccountModal from "../Components/AccountModal";
@@ -12,6 +13,7 @@ const FantasyBasketball = () => {
   const [leagues, setLeagues] = useState([]);
   const [leagueName, setLeagueName] = useState("");
   const [openLeagueModal, setOpenLeagueModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -36,6 +38,7 @@ const FantasyBasketball = () => {
             `http://localhost:5000/api/league/user/${data.user.id}`
           );
           const leaguesData = await leaguesResponse.json();
+          setLeagues(leaguesData);
         } else {
           setUser(null);
         }
@@ -54,6 +57,10 @@ const FantasyBasketball = () => {
     };
     setLeagues((prev) => [...prev, newLeague]);
     setLeagueName("");
+  };
+
+  const handleLeagueClick = (league) => {
+    navigate(`/league/${league.userId}/${league.leagueId}`);
   };
 
   return (
@@ -92,12 +99,19 @@ const FantasyBasketball = () => {
         </div>
         <div className="league-container">
           {leagues.length === 0 ? (
-            <h4 className="roster-league-container">Currently no leagues!</h4>
+            <h4 className="roster-league-container">
+              You're not a member of any leagues currently!
+            </h4>
           ) : (
             leagues.map((league) => (
-              <h4 key={league.leagueId} className="roster-league-container">
-                {league.name}
-              </h4>
+              <div
+                key={league.leagueId}
+                className="league-card"
+                onClick={() => handleLeagueClick(league)}>
+                <h4 key={league.leagueId} className="roster-league-container">
+                  {league.name}
+                </h4>
+              </div>
             ))
           )}
         </div>
