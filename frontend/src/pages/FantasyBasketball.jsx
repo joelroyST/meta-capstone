@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./FantasyBasketball.css";
 import TopBar from "../components/TopBar";
 import AccountModal from "../Components/AccountModal";
 import SidebarModal from "../components/SideBarModal";
 import LeagueModal from "../components/LeagueModal";
 
-const FantasyBasketball = () => {
-  const [user, setUser] = useState(null);
+const FantasyBasketball = ({ user, setUser }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   const [leagues, setLeagues] = useState([]);
   const [leagueName, setLeagueName] = useState("");
   const [openLeagueModal, setOpenLeagueModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -36,6 +37,7 @@ const FantasyBasketball = () => {
             `http://localhost:5000/api/league/user/${data.user.id}`
           );
           const leaguesData = await leaguesResponse.json();
+          setLeagues(leaguesData);
         } else {
           setUser(null);
         }
@@ -46,14 +48,40 @@ const FantasyBasketball = () => {
     fetchUserData();
   }, []);
 
-  const handleCreateLeague = () => {
-    if (!leagueName.trim()) return;
-    const newLeague = {
-      leagueId: Date.now(),
-      name: leagueName.trim(),
-    };
-    setLeagues((prev) => [...prev, newLeague]);
-    setLeagueName("");
+  const handleCreateLeague = async () => {
+    if (!leagueName.trim() || !user?.id) return;
+console.log("Bye")
+    try {
+      console.log("Hello");
+      const res = await fetch("http://localhost:5000/api/league", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: leagueName.trim(),
+          userId: user.id,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setLeagues((prev) => [...prev, data.league]);
+        setLeagueName("");
+      } else {
+        console.log("Create league error: ", data.error);
+      }
+    } catch (error) {
+      console.log("Create league fetch error: ", error);
+    }
+  };
+
+  // const newLeague = {
+  //   leagueId: Date.now(),
+  //   name: leagueName.trim(),
+  // };
+
+  const handleLeagueClick = (league) => {
+    navigate(`/league/${league.userId}/${league.leagueId}`);
   };
 
   return (
@@ -62,7 +90,7 @@ const FantasyBasketball = () => {
         onHamburgClick={() => setOpenSidebar((prev) => !prev)}
         onProfileClick={() => setOpenModal(true)}
       />
-      {openModal && <AccountModal setOpenModal={setOpenModal} />}
+      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} />}
       {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
       <h1 className="fantasy-main-title">Welcome to Fantasy Basketball!</h1>
       <h4 className="fantasy-basketball-instructions">
@@ -92,12 +120,19 @@ const FantasyBasketball = () => {
         </div>
         <div className="league-container">
           {leagues.length === 0 ? (
-            <h4 className="roster-league-container">Currently no leagues!</h4>
+            <h4 className="roster-league-container">
+              You're not a member of any leagues currently!
+            </h4>
           ) : (
             leagues.map((league) => (
-              <h4 key={league.leagueId} className="roster-league-container">
-                {league.name}
-              </h4>
+              <div
+                key={league.leagueId}
+                className="league-card"
+                onClick={() => handleLeagueClick(league)}>
+                <h4 key={league.leagueId} className="roster-league-container">
+                  {league.name}
+                </h4>
+              </div>
             ))
           )}
         </div>

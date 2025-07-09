@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./HomePage.css";
 import AccountModal from "../Components/AccountModal";
 import { useEffect } from "react";
 import SidebarModal from "../components/SideBarModal";
 import TopBar from "../components/TopBar";
 
-function HomePage() {
+function HomePage({ user, setUser }) {
   const [openModal, setOpenModal] = useState(false);
-  const [openSidebar, setOpenSidebar] = useState(false)
-  const [user, setUser] = useState(null);
+  const [openSidebar, setOpenSidebar] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+
     if (!token) {
       return;
     }
@@ -25,7 +27,7 @@ function HomePage() {
           },
         });
         const data = await res.json();
-
+        console.log(data);
         if (data.user) {
           setUser(data.user);
           localStorage.setItem("userID", data.user.id);
@@ -49,7 +51,10 @@ function HomePage() {
 
   return (
     <div className="homepage">
-      <TopBar onHamburgClick={() => setOpenSidebar((prev) => (!prev))} onProfileClick={handleOpenModal}/>
+      <TopBar
+        onHamburgClick={() => setOpenSidebar((prev) => !prev)}
+        onProfileClick={handleOpenModal}
+      />
       <div className="middle-homepage">
         <section className="recommended-section">
           <h3 className="recommended-teams-sports-title">
@@ -70,7 +75,7 @@ function HomePage() {
           <div className="trending-news-card">Popular/Trending Sports News</div>
         </div>
       </div>
-      {openModal && <AccountModal setOpenModal={setOpenModal} />}
+      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} />}
       {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
     </div>
   );

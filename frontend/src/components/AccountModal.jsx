@@ -3,7 +3,7 @@ import "./AccountModal.css";
 import DefaultProfilePic from "../assets/defaultpfp.svg";
 import { useNavigate } from "react-router-dom";
 
-const AccountModal = ({ setOpenModal }) => {
+const AccountModal = ({ setOpenModal, user }) => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -37,7 +37,7 @@ const AccountModal = ({ setOpenModal }) => {
         </div>
         <div className="profile-section">
           <img src={DefaultProfilePic}></img>
-          <p>Username</p>
+          <p>{user?.name}</p>
         </div>
       </div>
     </div>
