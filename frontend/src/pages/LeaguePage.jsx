@@ -15,6 +15,7 @@ const LeaguePage = () => {
 
   useEffect(() => {
     const fetchLeague = async () => {
+        console.log("leagueId: ", leagueId)
       try {
         const res = await fetch(
           `http://localhost:5000/api/league/${leagueId}?include=users`
@@ -22,7 +23,7 @@ const LeaguePage = () => {
         const data = await res.json();
         setLeague(data.league);
       } catch (error) {
-        console.log(`Error fetching the league: ${error}`);
+        console.log("LeaguePage error fetching league: ", error);
         navigate("/fantasy-basketball");
       }
     };

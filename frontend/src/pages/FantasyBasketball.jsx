@@ -6,8 +6,7 @@ import AccountModal from "../Components/AccountModal";
 import SidebarModal from "../components/SideBarModal";
 import LeagueModal from "../components/LeagueModal";
 
-const FantasyBasketball = () => {
-  const [user, setUser] = useState(null);
+const FantasyBasketball = ({ user, setUser }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   const [leagues, setLeagues] = useState([]);
@@ -49,15 +48,37 @@ const FantasyBasketball = () => {
     fetchUserData();
   }, []);
 
-  const handleCreateLeague = () => {
-    if (!leagueName.trim()) return;
-    const newLeague = {
-      leagueId: Date.now(),
-      name: leagueName.trim(),
-    };
-    setLeagues((prev) => [...prev, newLeague]);
-    setLeagueName("");
+  const handleCreateLeague = async () => {
+    if (!leagueName.trim() || !user?.id) return;
+console.log("Bye")
+    try {
+      console.log("Hello");
+      const res = await fetch("http://localhost:5000/api/league", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: leagueName.trim(),
+          userId: user.id,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setLeagues((prev) => [...prev, data.league]);
+        setLeagueName("");
+      } else {
+        console.log("Create league error: ", data.error);
+      }
+    } catch (error) {
+      console.log("Create league fetch error: ", error);
+    }
   };
+
+  // const newLeague = {
+  //   leagueId: Date.now(),
+  //   name: leagueName.trim(),
+  // };
 
   const handleLeagueClick = (league) => {
     navigate(`/league/${league.userId}/${league.leagueId}`);
@@ -69,7 +90,7 @@ const FantasyBasketball = () => {
         onHamburgClick={() => setOpenSidebar((prev) => !prev)}
         onProfileClick={() => setOpenModal(true)}
       />
-      {openModal && <AccountModal setOpenModal={setOpenModal} />}
+      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} />}
       {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
       <h1 className="fantasy-main-title">Welcome to Fantasy Basketball!</h1>
       <h4 className="fantasy-basketball-instructions">

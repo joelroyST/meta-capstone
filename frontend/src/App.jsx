@@ -7,12 +7,15 @@ import FantasyBasketball from "./pages/FantasyBasketball";
 import LeaguePage from "./pages/LeaguePage";
 
 function App() {
+    const [user, setUser] = useState(null);
+
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage user={user} setUser={setUser} />} />
         <Route path="/login" element={<LoginSignup />} />
-        <Route path="/fantasy-basketball" element={<FantasyBasketball />} />
+        <Route path="/fantasy-basketball" element={<FantasyBasketball user={user} setUser={setUser} />} />
         <Route path="/league/:userId/:leagueId" element={<LeaguePage />} />
       </Routes>
     </Router>

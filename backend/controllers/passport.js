@@ -10,6 +10,7 @@ passport.use(
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_SECRET_KEY,
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      profileFields: ['id', 'displayName', 'email'],
     },
     async function (accessToken, refreshToken, profile, cb) {
       try {
@@ -25,7 +26,7 @@ passport.use(
         if (!user) {
           user = await prisma.user.create({
             data: {
-              name: `${profile.name.split(" ")[0]} ${profile.name.split(" ").slice(1).join(" ")}`,
+              name: profile.displayName,
               email:
                 profile.emails && profile.emails[0]
                   ? profile.emails[0].value
