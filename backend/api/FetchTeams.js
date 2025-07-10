@@ -13,3 +13,4 @@ export async function fetchTeams() {
   }
   return res.json();
 }
+

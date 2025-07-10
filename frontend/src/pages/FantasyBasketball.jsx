@@ -11,46 +11,81 @@ const FantasyBasketball = ({ user, setUser }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [leagues, setLeagues] = useState([]);
   const [leagueName, setLeagueName] = useState("");
+  const [fantasyTeamName, setFantasyTeamName] = useState("");
+  const [fantasyteam, setFantasyTeam] = useState([]);
   const [openLeagueModal, setOpenLeagueModal] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      return;
+  const fetchUserLeagues = async (userId) => {
+    try {
+      const leagueRes = await fetch(
+        `http://localhost:5000/api/league/user/${userId}`
+      );
+      const leaguesData = await leagueRes.json();
+      setLeagues(leaguesData);
+    } catch (error) {
+      console.error("Error fetching leagues: ", error);
     }
+  };
 
-    async function fetchUserData() {
-      try {
-        const res = await fetch("http://localhost:5000/user/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await res.json();
+  useEffect(() => {
+  console.log("Running useEffect to fetch user...");
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
 
-        if (data.user) {
-          setUser(data.user);
-          localStorage.setItem("userID", data.user.id);
+  if (!user) {
+    const storedUser = localStorage.getItem("user");
+    console.log("Stored user from localStorage:", storedUser);
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }
 
-          const leaguesResponse = await fetch(
-            `http://localhost:5000/api/league/user/${data.user.id}`
-          );
-          const leaguesData = await leaguesResponse.json();
-          setLeagues(leaguesData);
-        } else {
-          setUser(null);
-        }
-      } catch {
+  if (!token) {
+    console.warn("No token found - skipping fetch");
+    return;
+  }
+
+  async function fetchUserData() {
+    try {
+      console.log("Fetching /user/me...");
+      const res = await fetch("http://localhost:5000/user/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      console.log("User data response:", data);
+
+      if (data.user) {
+        setUser(data.user);
+        localStorage.setItem("token", token);
+        localStorage.setItem("userID", data.user.id);
+
+        console.log("Fetching user leagues...");
+        const leaguesResponse = await fetch(
+          `http://localhost:5000/api/league/user/${data.user.id}`
+        );
+        const leaguesData = await leaguesResponse.json();
+        console.log("Leagues fetched:", leaguesData);
+        setLeagues(leaguesData);
+      } else {
+        console.warn("No user returned – setting user to null");
         setUser(null);
       }
+    } catch (error) {
+      console.error("Error in fetchUserData:", error);
+      setUser(null);
     }
-    fetchUserData();
-  }, []);
+  }
+
+  fetchUserData();
+}, []);
 
   const handleCreateLeague = async () => {
     if (!leagueName.trim() || !user?.id) return;
-console.log("Bye")
+    console.log("Bye");
     try {
       console.log("Hello");
       const res = await fetch("http://localhost:5000/api/league", {
@@ -75,10 +110,31 @@ console.log("Bye")
     }
   };
 
-  // const newLeague = {
-  //   leagueId: Date.now(),
-  //   name: leagueName.trim(),
-  // };
+  //   const handleViewUserRoster = async () => {
+  //     try {
+  //     console.log("LLLLLLLLLLL");
+  //       const res = await fetch("http://localhost:5000/api/fantasyteam", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           name: user.name.trim(),
+  //           userId: user.id,
+  //         }),
+  //       });
+  //       const data = await res.json();
+  //       if (res.ok) {
+  //         setFantasyTeam((prev) => [...prev, data.fantasyteam]);
+  //         setFantasyTeamName("");
+  //       } else {
+  //         console.log("Create league error: ", data.error);
+  //       }
+  //     } catch (error) {
+  //       console.log("Create league fetch error: ", error);
+  //     }
+  //     }
+  //   }
 
   const handleLeagueClick = (league) => {
     navigate(`/league/${league.userId}/${league.leagueId}`);

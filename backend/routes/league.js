@@ -3,13 +3,13 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+// Checking if a league is created and then displaying user information
 router.get("/:leagueId", async (req, res) => {
   const { leagueId } = req.params;
-  const includeUsers = req.query.include === "users";
   try {
     const league = await prisma.league.findUnique({
       where: { leagueId: parseInt(leagueId, 10) },
-      include: includeUsers ? { users: true } : {},
+      include: { users: true },
     });
 
     if (!league) {
@@ -22,6 +22,7 @@ router.get("/:leagueId", async (req, res) => {
   }
 });
 
+// Assinging league information to database
 router.post("/", async (req, res) => {
   const { name, userId } = req.body;
 
@@ -51,5 +52,22 @@ router.post("/", async (req, res) => {
     return res.status(500).json({ error: "There is an internal server error" });
   }
 });
+
+router.get("/user/:userId", async (req, res) => {
+    const {userId} = req.params;
+
+    try {
+        const leagues = await prisma.league.findMany({
+            where: {
+                users: {
+                    some: { id: parseInt(req.params.userId, 10)},
+                }
+            }
+        })
+        res.json(leagues);
+    } catch (error) {
+        res.status(500).json({error: "Internal server error in league.js"})
+    }
+})
 
 module.exports = router;

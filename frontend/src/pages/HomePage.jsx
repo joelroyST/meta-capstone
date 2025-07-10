@@ -30,6 +30,7 @@ function HomePage({ user, setUser }) {
         console.log(data);
         if (data.user) {
           setUser(data.user);
+          localStorage.setItem("token", token);
           localStorage.setItem("userID", data.user.id);
         } else {
           setUser(null);
