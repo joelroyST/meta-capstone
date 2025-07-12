@@ -85,9 +85,8 @@ const FantasyBasketball = ({ user, setUser }) => {
 
   const handleCreateLeague = async () => {
     if (!leagueName.trim() || !user?.id) return;
-    console.log("Bye");
+
     try {
-      console.log("Hello");
       const res = await fetch("http://localhost:5000/api/league", {
         method: "POST",
         headers: {
@@ -109,32 +108,6 @@ const FantasyBasketball = ({ user, setUser }) => {
       console.log("Create league fetch error: ", error);
     }
   };
-
-  //   const handleViewUserRoster = async () => {
-  //     try {
-  //     console.log("LLLLLLLLLLL");
-  //       const res = await fetch("http://localhost:5000/api/fantasyteam", {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           name: user.name.trim(),
-  //           userId: user.id,
-  //         }),
-  //       });
-  //       const data = await res.json();
-  //       if (res.ok) {
-  //         setFantasyTeam((prev) => [...prev, data.fantasyteam]);
-  //         setFantasyTeamName("");
-  //       } else {
-  //         console.log("Create league error: ", data.error);
-  //       }
-  //     } catch (error) {
-  //       console.log("Create league fetch error: ", error);
-  //     }
-  //     }
-  //   }
 
   const handleLeagueClick = (league) => {
     navigate(`/league/${league.userId}/${league.leagueId}`);

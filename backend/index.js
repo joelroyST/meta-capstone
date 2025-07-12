@@ -16,6 +16,8 @@ const leagueRouter = require("./routes/league");
 server.use("/api/league", leagueRouter);
 const fantasyTeamRouter = require("./routes/fantasyteam");
 server.use("/api", fantasyTeamRouter);
+const playerRouter = require("./routes/player");
+server.use("/api", playerRouter);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

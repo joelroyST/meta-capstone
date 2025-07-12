@@ -9,6 +9,7 @@ import TopBar from "../components/TopBar";
 function HomePage({ user, setUser }) {
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
+  const [players, setPlayers] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
@@ -49,6 +50,7 @@ function HomePage({ user, setUser }) {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
 
   return (
     <div className="homepage">

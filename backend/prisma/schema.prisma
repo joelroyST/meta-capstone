@@ -19,18 +19,17 @@ model User {
   email           String?  @unique
   facebookId      String   @unique
   provider        String
-  favoriteTeams   Team[]
-  favoritePlayers Player[]
-  leagues         League[]
+  favoriteTeams   String[] // Changed to String[] because id of model Team is a String type
+  favoritePlayers Int[] // Changed to Int[] becuase id of model Player is an Int type
+  leagues         Int[] // Changed to Int[] because id of model League is an Int type
 }
 
 model Team {
   id       String   @id // This is from the id the api assigns
-  players  Player[]
+  players  Int[] // This refers to refPlayer model
   city     String
   nickName String
   confName String
-  User     User[] // Only needed for compilation
 }
 
 model PlayerStatisticsPerGame {
@@ -58,13 +57,12 @@ model PlayerStatisticsPerGame {
   blocks        Int
   plusMinus     Int
   playerId      Int
-  player        Player @relation(fields: [playerId], references: [playerId])
 }
 
 model League {
   leagueId Int    @id
   name     String
-  users    User[]
+  users    Int[] // Changed to Int[] because model User has an id of type Int
 }
 
 model Transactions {
@@ -80,14 +78,17 @@ model Transactions {
 }
 
 model Player {
-  playerId  Int                       @id
+  playerId  Int     @id
   firstName String
   lastName  String
-  teamId    String
-  team      Team                      @relation(fields: [teamId], references: [id])
-  User      User[]
+  teamId    String? // Refers to real life team
+  fantasyTeamId     String? // Refers to fantasy team
   value     Int
-  stats     PlayerStatisticsPerGame[]
+}
+
+model RefPlayer {
+  id       Int  @id
+  metadata Json
 }
 
 model FantasyTeam {
