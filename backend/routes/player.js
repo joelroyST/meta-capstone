@@ -3,6 +3,16 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+router.get("/refPlayers", async (req, res) => {
+  try {
+    const players = await prisma.refPlayer.findMany();
+    return res.json(players);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to fetch players' });
+  }
+});
+
 router.post("/players", async (req, res) => {
   try {
     const { id, firstName, lastName } = req.body;
