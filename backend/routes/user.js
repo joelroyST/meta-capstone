@@ -29,10 +29,6 @@ router.get("/me", authenticateToken, async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.user.userId },
-      include: {
-        favoriteTeams: true,
-        favoritePlayers: true,
-      },
     });
 
     if (!user) {

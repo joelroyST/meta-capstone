@@ -5,10 +5,12 @@
 }
 
 .roster-container {
-    max-width: 800px;
+    width: 90vw;
     background-color: white;
-
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .roster-title {
@@ -20,8 +22,9 @@
 
 .players-grid {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
-    width: 400px;
+    width: 80vw;
     height: 400px;
     border: 1px solid black;
 }
@@ -36,7 +39,6 @@
     align-items: center;
     margin: 5px;
     border-radius: 8px;
-    position: absolute;
     transition: transform 0.2s, background-color 0,2s;
 }
 

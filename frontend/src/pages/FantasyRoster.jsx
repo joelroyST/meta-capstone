@@ -10,21 +10,25 @@ const FantasyRoster = ({ user, setUser }) => {
   const [players, setPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRoster = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/fantasyteam/${userId}/${leagueId}`
+          `http://localhost:5000/api/fantasyteam/roster/${userId}/${leagueId}`
         );
-        console.log(res);
-        console.log(res.status)
+        if (!res.ok) {
+          throw new Error("failed to fetch the roster");
+        }
 
         const data = await res.json();
         setPlayers(data.players || []);
       } catch (error) {
-        console.log("The error is right here in Fantasy Roster")
+        console.log("The error is right here in Fantasy Roster");
         console.error("Error fetching roster: ", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchRoster();
@@ -38,19 +42,40 @@ const FantasyRoster = ({ user, setUser }) => {
       />
       <div className="roster-container">
         <h2 className="roster-title">Fantasy Team Roster</h2>
-        <div className="players-grid">
-          {[...Array(5)].map((_, index) => {
-            const playerId = players[index];
-            return (
-              <div
-                key={index}
-                className={playerId ? "player-card filled" : "player-card empty"}>
-                <p>{playerId ? `Player ID: ${playerId}` : "Empty Slot"}</p>
-              </div>
-            );
-          })}
-        </div>
+
+        {loading ? (
+          <p>Loading Roster...</p>
+        ) : players.length === 0 ? (
+          <p>No players in your fantasy team roster yet</p>
+        ) : (
+          <div className="players-grid">
+            {(() => {
+              const minCards = 5;
+              const totalCards = Math.max(minCards, players.length);
+              return [...Array(totalCards)].map((_, index) => {
+                const playerId = players[index];
+                return (
+                  <div
+                    key={index}
+                    className={
+                      playerId ? "player-card filled" : "player-card empty"
+                    }>
+                    <p>{playerId ? `Player ID: ${playerId}` : "Empty Slot"}</p>
+                  </div>
+                );
+              });
+            })()}
+          </div>
+        )}
       </div>
+      {openModal && (
+        <AccountModal
+          setOpenModal={setOpenModal}
+          user={user}
+          setUser={setUser}
+        />
+      )}
+      {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
     </div>
   );
 };
