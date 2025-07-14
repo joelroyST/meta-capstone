@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
 
   if (!name || !userId) {
     console.log("POST in league.js is missing name or userId", req.body);
-    return res.status(400).json({ error: "Name and userid are required" });
+    return res.status(400).json({ error: "Name and userId are required" });
   }
 
   try {
@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
         users: [userId],
       },
     });
-    console.log("POST in league.js creating new league:", newLeague);
+    console.log("POST in league.js creating new league: ", newLeague);
     return res.status(201).json({ league: newLeague });
   } catch (error) {
     console.error("POST league.js has an error creating league: ", error);
