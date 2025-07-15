@@ -28,12 +28,10 @@ function HomePage({ user, setUser, handleLogout }) {
           },
         });
         const data = await res.json();
-        console.log("This is the data: ", data);
         if (data.user) {
           setUser(data.user);
           localStorage.setItem("token", token);
           localStorage.setItem("userID", data.user.id);
-          console.log("This is the token", token);
         } else {
           setUser(null);
         }

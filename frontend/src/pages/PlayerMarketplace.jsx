@@ -22,13 +22,13 @@ const PlayerMarketplace = ({ user, setUser, handleLogout }) => {
       }
     }
   }, [user, setUser]);
-  
+
   useEffect(() => {
     const fetchAllPlayers = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/refPlayers");
         if (!res.ok) {
-          console.log(
+          console.error(
             "There is an error in fetching players PlayerMarketplace.jsx"
           );
         }
@@ -36,7 +36,7 @@ const PlayerMarketplace = ({ user, setUser, handleLogout }) => {
         setPlayers(data);
         setFilteredPlayers(data);
       } catch (error) {
-        console.log("Error trying to fetch players in marketplace: ", error);
+        console.error("Error trying to fetch players in marketplace: ", error);
       }
     };
     fetchAllPlayers();

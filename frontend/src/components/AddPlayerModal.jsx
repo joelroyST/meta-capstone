@@ -18,7 +18,7 @@ const AddPlayerModal = ({ player, user, onClose }) => {
         const data = await res.json();
         setLeagues(data);
       } catch (error) {
-        console.log("Error fetching user leagues in AddPlayerModal: ", error);
+        console.error("Error fetching user leagues in AddPlayerModal: ", error);
       }
     };
     fetchUserLeagues();

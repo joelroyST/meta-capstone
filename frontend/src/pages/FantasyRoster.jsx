@@ -25,8 +25,7 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
         const data = await res.json();
         setPlayers(data.players || []);
       } catch (error) {
-        console.log("The error is right here in Fantasy Roster");
-        console.error("Error fetching roster: ", error);
+        console.error("Error fetching roster in Fantasy Roster: ", error);
       } finally {
         setLoading(false);
       }
