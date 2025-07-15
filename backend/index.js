@@ -15,7 +15,7 @@ server.use("/user", userRouter);
 const leagueRouter = require("./routes/league");
 server.use("/api/league", leagueRouter);
 const fantasyTeamRouter = require("./routes/fantasyteam");
-server.use("/api", fantasyTeamRouter);
+server.use("/api/fantasyteam", fantasyTeamRouter);
 const playerRouter = require("./routes/player");
 server.use("/api", playerRouter);
 

@@ -9,13 +9,19 @@ router.get("/:leagueId", async (req, res) => {
   try {
     const league = await prisma.league.findUnique({
       where: { leagueId: parseInt(leagueId, 10) },
-      include: { users: true },
     });
 
     if (!league) {
       return res.status(404).json({ error: "League not found" });
     }
-    return res.json({ league });
+
+    const members = await prisma.user.findMany({
+      where: {
+        id: {
+          in: league.users},
+        }
+    })
+    return res.json({ league: {...league, users: members} });
   } catch (error) {
     console.error("Error fetching league: ", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -32,7 +38,7 @@ router.post("/", async (req, res) => {
 
   if (!name || !userId) {
     console.log("POST in league.js is missing name or userId", req.body);
-    return res.status(400).json({ error: "Name and userid are required" });
+    return res.status(400).json({ error: "Name and userId are required" });
   }
 
   try {
@@ -40,12 +46,10 @@ router.post("/", async (req, res) => {
       data: {
         leagueId: generateRandomId(),
         name,
-        users: {
-          connect: { id: userId },
-        },
+        users: [userId],
       },
     });
-    console.log("POST in league.js creating new league:", newLeague);
+    console.log("POST in league.js creating new league: ", newLeague);
     return res.status(201).json({ league: newLeague });
   } catch (error) {
     console.error("POST league.js has an error creating league: ", error);
@@ -54,20 +58,21 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/user/:userId", async (req, res) => {
-    const {userId} = req.params;
+  const userId = parseInt(req.params.userId, 10);
 
-    try {
-        const leagues = await prisma.league.findMany({
-            where: {
-                users: {
-                    some: { id: parseInt(req.params.userId, 10)},
-                }
-            }
-        })
-        res.json(leagues);
-    } catch (error) {
-        res.status(500).json({error: "Internal server error in league.js"})
-    }
-})
+  try {
+    const leagues = await prisma.league.findMany({
+      where: {
+        users: {
+          has: userId,
+        },
+      },
+    });
+    res.json(leagues);
+  } catch (error) {
+    console.log("Error fetching leagues: ", error);
+    res.status(500).json({ error: "Internal server error in league.js" });
+  }
+});
 
 module.exports = router;
