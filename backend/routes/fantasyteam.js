@@ -3,7 +3,7 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const addPlayerToFantasyTeam = require("../utils/fantasyteamhelper");
+const { addPlayerToFantasyTeam, removePlayerFromFantasyTeam}  = require("../utils/fantasyteamhelper");
 
 // To create fantasy team
 router.post("/:leagueId/fantasyteam", async (req, res) => {
@@ -63,7 +63,6 @@ router.get("/:userId/:leagueId", async (req, res) => {
   }
 });
 
-
 // Add player to fantasy team
 router.post("/:userId/:leagueId/addPlayer", async (req, res) => {
   try {
@@ -84,5 +83,22 @@ router.post("/:userId/:leagueId/addPlayer", async (req, res) => {
     res.status(500).json({ success: false, error: "Couldn't add player to team" });
   }
 });
+
+// Remove player from fantasy team
+router.post("/:userId/:leagueId/removePlayer", async (req, res) => {
+  try {
+    const { userId, leagueId } = req.params;
+    const { playerId } = req.body;
+
+    const updatedTeam = await removePlayerFromFantasyTeam(userId, leagueId, playerId)
+    res.json({success: true, message: "Player removed successfully", team: updatedTeam})
+  } catch (error) {
+    if (error.message === "Fantasy team not found") {
+      return res.status(404).json({success: false, error: error.message})
+    }
+    console.error(error);
+    res.status(500).json({success: false, error: "Couldn't remove player from team"})
+  }
+})
 
 module.exports = router;

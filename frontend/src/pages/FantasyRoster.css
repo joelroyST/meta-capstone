@@ -1,16 +1,23 @@
 .fantasy-roster-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     padding: 20px;
-    background-color: lightgray;
+    background-color: rgb(240, 242, 245);
     min-height: 100vh;
 }
 
 .roster-container {
-    width: 90vw;
-    background-color: white;
-    border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px 0px;
+    width: 90vw;
+    max-width: 1000px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
 }
 
 .roster-title {
@@ -24,25 +31,51 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width: 80vw;
-    height: 400px;
-    border: 1px solid black;
+    gap: 10px;
+    width: 90%;
+    padding: 10px;
 }
 
 .player-card {
     width: 120px;
     height: 150px;
-    background-color: lightblue;
+    background-color: rgb(227, 242, 253);
     border: 1px solid rgb(150, 150, 150);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 5px;
-    border-radius: 8px;
-    transition: transform 0.2s, background-color 0,2s;
+    border-radius: 10px;
+    transition: transform 0.2s, background-color 0.2s;
+    padding: 10px;
+    text-align: center;
 }
 
 .player-card:hover {
     transform: translateY(-4px);
-    background-color: rgb(93, 93, 238);
+    background-color: rgb(199, 199, 221);
+}
+
+.player-card.filled {
+    background-color: rgb(187, 222, 251);
+}
+
+.player-card.empty {
+    background-color: rgb(245, 245, 245);
+}
+
+.remove-player-button {
+    margin-top: 8px;
+    padding: 5px 10px;
+    background-color: rgb(229, 57, 53);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0,1s;
+}
+
+.remove-player-button:hover {
+    background-color: rgb(198, 40, 40);
+    transform: scale(1.05);
 }
