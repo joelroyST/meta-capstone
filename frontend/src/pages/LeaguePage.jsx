@@ -18,7 +18,6 @@ const LeaguePage = ({user, setUser, handleLogout }) => {
       try {
         const res = await fetch(`http://localhost:5000/api/league/${leagueId}`);
         const data = await res.json();
-        console.log(data);
         setLeague(data.league);
       } catch (error) {
         console.log("LeaguePage error fetching league: ", error);

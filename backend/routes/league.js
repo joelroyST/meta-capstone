@@ -74,7 +74,7 @@ router.get("/user/:userId", async (req, res) => {
     });
     res.json(leagues);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error in league.js" });
   }
 });

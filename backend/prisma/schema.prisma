@@ -65,18 +65,6 @@ model League {
   users    Int[] // Changed to Int[] because model User has an id of type Int
 }
 
-model Transactions {
-  id               Int    @id @default(autoincrement())
-  playersFromTeamA Int[]
-  playersFromTeamB Int[]
-  userA            Int
-  leagueA          Int
-  userB            Int
-  leagueB          Int
-  transactionType  String
-  status           String
-}
-
 model Player {
   playerId  Int     @id
   firstName String
@@ -90,13 +78,6 @@ model RefPlayer {
   id       Int  @id
   metadata Json
 }
-
-// model RefPlayerAttribute { This could be used in the future to make it more efficient
-//   id Int @id
-//   playerId Int
-//   attributeName String
-//   attributeValue 
-// }
 
 model FantasyTeam {
   userId    Int

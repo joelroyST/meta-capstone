@@ -69,15 +69,13 @@ router.post("/:userId/:leagueId/addPlayer", async (req, res) => {
     const { userId, leagueId } = req.params;
     const { playerId } = req.body;
 
-    console.log(playerId)
-
     const updatedTeam = await addPlayerToFantasyTeam(userId, leagueId, playerId);
     res.json({ success: true, message: "It was a success", team: updatedTeam });
   } catch (error) {
     if (error.message === "Player already taken") {
       return res.status(400).json({ success: false, error: error.message });
     } else if (error.message === "Fantasy team not found") {
-      return res.status(404).json({ success: false, error: error.message, message: "This is the error" });
+      return res.status(404).json({ success: false, error: error.message, message: "Error found in fantasyteam.js" });
     }
     console.error(error);
     res.status(500).json({ success: false, error: "Couldn't add player to team" });

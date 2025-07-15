@@ -60,7 +60,6 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
       if (data.user) {
         setUser(data.user);
         localStorage.setItem("token", token);
-        console.log("This is toke: ", token)
         localStorage.setItem("userID", data.user.id);
 
         console.log("Fetching user leagues...");
@@ -105,7 +104,7 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
         console.log("Create league error: ", data.error);
       }
     } catch (error) {
-      console.log("Create league fetch error: ", error);
+      console.error("Create league fetch error: ", error);
     }
   };
 
