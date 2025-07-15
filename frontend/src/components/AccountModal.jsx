@@ -3,7 +3,7 @@ import "./AccountModal.css";
 import DefaultProfilePic from "../assets/defaultpfp.svg";
 import { useNavigate } from "react-router-dom";
 
-const AccountModal = ({ setOpenModal, user }) => {
+const AccountModal = ({ setOpenModal, user, handleLogout }) => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -11,10 +11,11 @@ const AccountModal = ({ setOpenModal, user }) => {
     setOpenModal(false);
   };
 
-  const handleLogout = () => {
+  const handleAccountLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("isRemembered");
     localStorage.removeItem("userID");
+    handleLogout();
     navigate("/");
     setOpenModal(false);
   };
@@ -32,7 +33,7 @@ const AccountModal = ({ setOpenModal, user }) => {
         </div>
         <div className="modal-body">
           <button onClick={handleLogin}>Login</button>
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleAccountLogout}>Logout</button>
           <button>Settings</button>
         </div>
         <div className="profile-section">

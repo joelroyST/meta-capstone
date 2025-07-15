@@ -5,7 +5,7 @@ import AccountModal from "../Components/AccountModal";
 import SidebarModal from "../components/SideBarModal";
 import "./FantasyRoster.css";
 
-const FantasyRoster = ({ user, setUser }) => {
+const FantasyRoster = ({ user, setUser, handleLogout }) => {
   const { userId, leagueId } = useParams();
   const [players, setPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -16,7 +16,7 @@ const FantasyRoster = ({ user, setUser }) => {
     const fetchRoster = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/fantasyteam/roster/${userId}/${leagueId}`
+          `http://localhost:5000/api/fantasyteam/${userId}/${leagueId}`
         );
         if (!res.ok) {
           throw new Error("failed to fetch the roster");

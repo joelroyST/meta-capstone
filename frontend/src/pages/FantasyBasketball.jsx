@@ -6,7 +6,7 @@ import AccountModal from "../Components/AccountModal";
 import SidebarModal from "../components/SideBarModal";
 import LeagueModal from "../components/LeagueModal";
 
-const FantasyBasketball = ({ user, setUser }) => {
+const FantasyBasketball = ({ user, setUser, handleLogout }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   const [leagues, setLeagues] = useState([]);
@@ -48,7 +48,6 @@ const FantasyBasketball = ({ user, setUser }) => {
 
   async function fetchUserData() {
     try {
-      console.log("Fetching /user/me...");
       const res = await fetch("http://localhost:5000/user/me", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -61,6 +60,7 @@ const FantasyBasketball = ({ user, setUser }) => {
       if (data.user) {
         setUser(data.user);
         localStorage.setItem("token", token);
+        console.log("This is toke: ", token)
         localStorage.setItem("userID", data.user.id);
 
         console.log("Fetching user leagues...");
@@ -113,13 +113,18 @@ const FantasyBasketball = ({ user, setUser }) => {
     navigate(`/league/${league.userId}/${league.leagueId}`);
   };
 
+  const handleNavigatePlayerMarketPlace = () => {
+        navigate('/player-marketplace');
+        setOpenSidebar(false);
+    }
+
   return (
     <div className="fantasy-basketball-page">
       <TopBar
         onHamburgClick={() => setOpenSidebar((prev) => !prev)}
         onProfileClick={() => setOpenModal(true)}
       />
-      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} />}
+      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} handleLogout={handleLogout} />}
       {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
       <h1 className="fantasy-main-title">Welcome to Fantasy Basketball!</h1>
       <h4 className="fantasy-basketball-instructions">
@@ -166,16 +171,8 @@ const FantasyBasketball = ({ user, setUser }) => {
           )}
         </div>
       </div>
-      <div className="fantasy-user-roster">
-        <h2>My Roster:</h2>
-        <div className="roster-container">
-          <h4 className="roster-player-container"></h4>
-          <h4 className="roster-player-container">LeBron James</h4>
-          <h4 className="roster-player-container">Stephen Curry</h4>
-          <h4 className="roster-player-container">Devin Booker</h4>
-          <h4 className="roster-player-container">Kevin Durant</h4>
-          <h4 className="roster-player-container">Derrick Rose</h4>
-        </div>
+      <div className="player-marketplace-button">
+        <button className="marketplace-button" onClick={handleNavigatePlayerMarketPlace}>Enter the Player Marketplace!</button>
       </div>
       {openLeagueModal && (
         <LeagueModal

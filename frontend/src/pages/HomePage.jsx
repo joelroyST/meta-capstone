@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import SidebarModal from "../components/SideBarModal";
 import TopBar from "../components/TopBar";
 
-function HomePage({ user, setUser }) {
+function HomePage({ user, setUser, handleLogout }) {
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   const [players, setPlayers] = useState([]);
@@ -28,11 +28,12 @@ function HomePage({ user, setUser }) {
           },
         });
         const data = await res.json();
-        console.log(data);
+        console.log("This is the data: ", data);
         if (data.user) {
           setUser(data.user);
           localStorage.setItem("token", token);
           localStorage.setItem("userID", data.user.id);
+          console.log("This is the token", token);
         } else {
           setUser(null);
         }
@@ -50,7 +51,6 @@ function HomePage({ user, setUser }) {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-
 
   return (
     <div className="homepage">
@@ -78,7 +78,7 @@ function HomePage({ user, setUser }) {
           <div className="trending-news-card">Popular/Trending Sports News</div>
         </div>
       </div>
-      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} />}
+      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} handleLogout={handleLogout} />}
       {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
     </div>
   );

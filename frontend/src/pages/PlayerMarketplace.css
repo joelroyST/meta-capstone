@@ -1,0 +1,93 @@
+.player-marketplace-page {
+    padding: 32px;
+    background-color: rgb(231, 235, 241);
+    min-height: 100vh;
+}
+
+.marketplace-title {
+    text-align: center;
+    font-size: 24px;
+    color: rgb(44,62,80);
+    margin-bottom: 20px;
+}
+
+.search-input {
+    display: block;
+    margin: 0 auto 24px auto;
+    padding: 12px 16px;
+    width: 60%;
+    max-width: 400px;
+    font-size: 16px;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 8px;
+}
+
+.sort-button {
+    display: block;
+    margin: 0 auto 16px auto;
+    padding: 10px 20px;
+    background-color: rgb(52, 152, 219);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+}
+
+.sort-button:hover {
+    background-color: rgb(41, 128, 185);
+}
+
+table {
+    width: 90%;
+    margin: 0 auto;
+    border-spacing: 0 16px;
+    border-collapse: separate;
+}
+
+thead td {
+    font-weight: bold;
+    text-align: left;
+    padding: 16px;
+    font-size: 16px;
+    color: rgb(52, 73, 94);
+}
+
+tbody tr {
+    background-color: white;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0,08);
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+tbody tr:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 16px rgba(0,0,0,0,12);
+}
+
+tbody td {
+    padding: 20px;
+    font-size: 16px;
+    color: rgb(44, 62, 80);
+    border-bottom: 1px solid rgb(230, 230, 230);
+}
+
+tbody td:first-child {
+    font-weight: bold;
+    width: 80px;
+}
+
+.view-button {
+    padding: 8px 16px;
+    background-color: rgb(46, 204, 113);
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform background-color 0.3s;
+}
+
+.view-button:hover {
+    background-color: rgb(39, 174, 96);
+}

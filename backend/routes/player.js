@@ -3,6 +3,7 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+// GET the players from refPlayers for the marketplace
 router.get("/refPlayers", async (req, res) => {
   try {
     const players = await prisma.refPlayer.findMany();

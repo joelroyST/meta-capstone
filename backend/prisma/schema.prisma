@@ -91,6 +91,13 @@ model RefPlayer {
   metadata Json
 }
 
+// model RefPlayerAttribute { This could be used in the future to make it more efficient
+//   id Int @id
+//   playerId Int
+//   attributeName String
+//   attributeValue 
+// }
+
 model FantasyTeam {
   userId    Int
   leagueId  Int
