@@ -2,6 +2,9 @@
     padding: 20px;
     min-height: 100vh;
     background: linear-gradient(rgb(192, 74, 192) 30%, rgb(49, 214, 74) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .fantasy-league-roster {
@@ -30,11 +33,24 @@
     margin-top: 20px;
 }
 
-.roster-player-container {
-    padding: 10px 0;
-    border-radius: 10px;
-    border: 2px solid black;
-    padding: 16px;
+.player-marketplace-button {
+    display: flex;
+    justify-content: center;
+}
+
+.marketplace-button{
+    background-color: white;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    width: 30vw;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    align-items: center;
+    border: 3px solid black;
+    cursor: pointer;
 }
 
 .fantasy-main-title {

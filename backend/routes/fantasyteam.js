@@ -3,6 +3,8 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const addPlayerToFantasyTeam = require("../utils/fantasyteamhelper");
+
 // To create fantasy team
 router.post("/:leagueId/fantasyteam", async (req, res) => {
   try {
@@ -36,12 +38,12 @@ router.post("/:leagueId/fantasyteam", async (req, res) => {
   }
 });
 
-// GET the roster
-router.get("/roster/:userId/:leagueId", async (req, res) => {
+// GET a user's fantasy team in a league
+router.get("/:userId/:leagueId", async (req, res) => {
   const { userId, leagueId } = req.params;
-  console.log("Fetching fantasy roster for: ", { userId, leagueId });
+
   try {
-    const fantasyTeam = await prisma.fantasyTeam.findUnique({
+    const team = await prisma.fantasyTeam.findUnique({
       where: {
         userId_leagueId: {
           userId: parseInt(userId, 10),
@@ -50,24 +52,25 @@ router.get("/roster/:userId/:leagueId", async (req, res) => {
       },
     });
 
-    if (!fantasyTeam) {
-      console.log("No fantasy team found");
+    if (!team) {
       return res.status(404).json({ error: "Fantasy team not found" });
     }
-    console.log("Fantasy team found: ", fantasyTeam);
-    return res.json({ players: fantasyTeam.playerIds || [] });
+
+    return res.json({ players: team.playerIds }); // Make sure this matches frontend expectations
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({ error: "Could not fetch roster" });
+    console.error("Error fetching fantasy team:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 
 
 // Add player to fantasy team
-router.post("/fantasyteam/:userId/:leagueId/addPlayer", async (req, res) => {
+router.post("/:userId/:leagueId/addPlayer", async (req, res) => {
   try {
     const { userId, leagueId } = req.params;
     const { playerId } = req.body;
+
+    console.log(playerId)
 
     const updatedTeam = await addPlayerToFantasyTeam(userId, leagueId, playerId);
     res.json({ success: true, message: "It was a success", team: updatedTeam });
@@ -75,7 +78,7 @@ router.post("/fantasyteam/:userId/:leagueId/addPlayer", async (req, res) => {
     if (error.message === "Player already taken") {
       return res.status(400).json({ success: false, error: error.message });
     } else if (error.message === "Fantasy team not found") {
-      return res.status(404).json({ success: false, error: error.message });
+      return res.status(404).json({ success: false, error: error.message, message: "This is the error" });
     }
     console.error(error);
     res.status(500).json({ success: false, error: "Couldn't add player to team" });

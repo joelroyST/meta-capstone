@@ -18,6 +18,8 @@ const fantasyTeamRouter = require("./routes/fantasyteam");
 server.use("/api/fantasyteam", fantasyTeamRouter);
 const playerRouter = require("./routes/player");
 server.use("/api", playerRouter);
+const marketplaceRouter = require("./routes/marketplace");
+server.use("/api", marketplaceRouter);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

@@ -5,7 +5,7 @@ import SidebarModal from "../components/SideBarModal";
 import AccountModal from "../Components/AccountModal";
 import "./LeaguePage.css";
 
-const LeaguePage = ({user, setUser}) => {
+const LeaguePage = ({user, setUser, handleLogout }) => {
   const { leagueId } = useParams();
   const navigate = useNavigate();
   const [league, setLeague] = useState(null);
@@ -18,7 +18,7 @@ const LeaguePage = ({user, setUser}) => {
       try {
         const res = await fetch(`http://localhost:5000/api/league/${leagueId}`);
         const data = await res.json();
-        console.log(data.league);
+        console.log(data);
         setLeague(data.league);
       } catch (error) {
         console.log("LeaguePage error fetching league: ", error);
@@ -35,7 +35,7 @@ const LeaguePage = ({user, setUser}) => {
         onHamburgClick={() => setOpenSidebar((prev) => !prev)}
         onProfileClick={() => setOpenModal(true)}
       />
-      {openModal && <AccountModal setOpenModal={setOpenModal} />}
+      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} handleLogout={handleLogout} />}
       {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
       <div className="league-top-container">
         <button
