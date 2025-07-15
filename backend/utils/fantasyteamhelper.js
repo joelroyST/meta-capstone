@@ -9,7 +9,9 @@ async function isPlayerInAFantasyTeam(playerId, leagueId) {
 
   for (const team of teamsInLeague) {
     if (team.playerIds.includes(playerId)) {
-      console.log(`Player ${playerId} is already owned by user ${team.userId} in league ${leagueId}.`);
+      console.log(
+        `Player ${playerId} is already owned by user ${team.userId} in league ${leagueId}.`
+      );
       return true;
     }
   }
@@ -32,8 +34,8 @@ async function addPlayerToFantasyTeam(userId, leagueId, playerId) {
       userId_leagueId: {
         userId: parsedUserId,
         leagueId: parsedLeagueId,
-      }
-    }
+      },
+    },
   });
 
   if (!fantasyTeam) {
@@ -45,16 +47,49 @@ async function addPlayerToFantasyTeam(userId, leagueId, playerId) {
       userId_leagueId: {
         userId: parsedUserId,
         leagueId: parsedLeagueId,
-      }
+      },
     },
     data: {
       playerIds: {
         push: playerId,
-      }
-    }
+      },
+    },
   });
 
   return updatedTeam;
 }
 
-module.exports = addPlayerToFantasyTeam;
+async function removePlayerFromFantasyTeam(userId, leagueId, playerId) {
+  const parsedUserId = parseInt(userId, 10);
+  const parsedLeagueId = parseInt(leagueId, 10);
+  const parsedPlayerId = parseInt(playerId, 10);
+
+  const fantasyTeam = await prisma.fantasyTeam.findUnique({
+    where: {
+        userId_leagueId: {
+            userId: parsedUserId,
+            leagueId: parsedLeagueId,
+        }
+    }
+  })
+  if (!fantasyTeam) {
+    throw new Error("Fantasy team not found");
+  }
+
+  const updatedPlayerIds = fantasyTeam.playerIds.filter(id => id !== parsedPlayerId);
+
+  const updatedTeam = await prisma.fantasyTeam.update({
+    where: {
+        userId_leagueId: {
+            userId: parsedUserId,
+            leagueId: parsedLeagueId,
+        }
+    },
+    data: {
+        playerIds: updatedPlayerIds,
+    }
+  })
+  return updatedTeam;
+}
+
+module.exports = {addPlayerToFantasyTeam, removePlayerFromFantasyTeam};

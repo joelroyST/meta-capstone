@@ -34,6 +34,36 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
     fetchRoster();
   }, [userId, leagueId]);
 
+  const handleRemovePlayer = async (playerId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/fantasyteam/${userId}/${leagueId}/removePlayer`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ playerId }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Error removing player");
+        return;
+      }
+      setPlayers((prevPlayers) => {
+        const updatedPlayers = [...prevPlayers];
+        const index = updatedPlayers.indexOf(playerId);
+        if (index !== -1) {
+          updatedPlayers[index] = null;
+        }
+        return updatedPlayers;
+      });
+      alert("Player removed successfully");
+    } catch (error) {
+      console.error("Error removing player: ", error);
+      alert("Error removing player and check console for more details");
+    }
+  };
+
   return (
     <div className="fantasy-roster-page">
       <TopBar
@@ -60,7 +90,18 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
                     className={
                       playerId ? "player-card filled" : "player-card empty"
                     }>
-                    <p>{playerId ? `Player ID: ${playerId}` : "Empty Slot"}</p>
+                    {playerId ? (
+                      <div>
+                        <p>{`Player ID: ${playerId}`}</p>
+                        <button
+                          onClick={() => handleRemovePlayer(playerId)}
+                          className="remove-player-button">
+                          Remove Player
+                        </button>
+                      </div>
+                    ) : (
+                      <p>Empty Player</p>
+                    )}
                   </div>
                 );
               });
