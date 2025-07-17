@@ -22,10 +22,11 @@ model User {
   favoriteTeams   String[] // Changed to String[] because id of model Team is a String type
   favoritePlayers Int[] // Changed to Int[] becuase id of model Player is an Int type
   leagues         Int[] // Changed to Int[] because id of model League is an Int type
+  Trade           Trade[]
 }
 
 model Team {
-  id       String   @id // This is from the id the api assigns
+  id       String @id // This is from the id the api assigns
   players  Int[] // This refers to refPlayer model
   city     String
   nickName String
@@ -66,12 +67,12 @@ model League {
 }
 
 model Player {
-  playerId  Int     @id
-  firstName String
-  lastName  String
-  teamId    String? // Refers to real life team
-  fantasyTeamId     String? // Refers to fantasy team
-  value     Int
+  playerId      Int     @id
+  firstName     String
+  lastName      String
+  teamId        String? // Refers to real life team
+  fantasyTeamId String? // Refers to fantasy team
+  value         Int
 }
 
 model RefPlayer {
@@ -86,4 +87,14 @@ model FantasyTeam {
   playerIds Int[]
 
   @@id([userId, leagueId])
+}
+
+model Trade {
+  recordId    Int   @id @default(autoincrement())
+  tradeId     Int
+  proposerId  Int
+  user        User  @relation(fields: [proposerId], references: [id])
+  playersTo Int[]
+  userId      Int
+  confirmation Int
 }

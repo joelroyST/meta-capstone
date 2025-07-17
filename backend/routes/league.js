@@ -3,6 +3,8 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const { createFantasyTeam } = require("../utils/fantasyteamhelper");
+
 // Checking if a league is created and then displaying user information
 router.get("/:leagueId", async (req, res) => {
   const { leagueId } = req.params;
@@ -48,6 +50,17 @@ router.post("/", async (req, res) => {
         users: [userId],
       },
     });
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        leagues: {
+          push: newLeague.leagueId,
+        },
+      },
+    });
+
+    createFantasyTeam(userId, newLeague.leagueId);
+
     console.log("POST in league.js creating new league: ", newLeague);
     return res.status(201).json({ league: newLeague });
   } catch (error) {
@@ -56,6 +69,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Get all the leagues of the specified user
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
 
@@ -76,6 +90,98 @@ router.get("/user/:userId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error in league.js" });
+  }
+});
+
+// Get all the users in a specified league
+router.get("/:leagueId/users", async (req, res) => {
+  const { leagueId } = req.params;
+
+  try {
+    const leagueIdNum = parseInt(leagueId, 10);
+    if (isNaN(leagueIdNum)) {
+      return res.status(400).json({ error: "Invalid leagueId" });
+    }
+
+    const users = await prisma.user.findMany({
+      where: {
+        leagues: {
+          has: leagueIdNum,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal server error in league.js for getting league users",
+    });
+  }
+});
+
+router.get("/:leagueId/users-with-players", async (req, res) => {
+  const { leagueId } = req.params;
+
+  try {
+    const leagueIdNum = parseInt(leagueId, 10);
+    if (isNaN(leagueIdNum)) {
+      return res.status(400).json({ error: "Invalid leagueId" });
+    }
+
+    const userIds = await prisma.league.findFirst({
+      where: {
+        leagueId: leagueIdNum,
+      },
+      select: {
+        users: true,
+      },
+    });
+
+    const users = await prisma.user.findMany({
+      where: {
+        id: {
+          in: userIds.users,
+        }
+      }
+    })
+    console.log("this is users:", users)
+
+    const fantasyteams = await prisma.fantasyTeam.findMany({
+      where: {
+        leagueId: {
+          equals: leagueIdNum,
+        },
+        userId: {
+          in: userIds.users,
+        }
+      }
+    })
+    console.log("This is the fantasy:", fantasyteams);
+
+    const refplayerspromise = fantasyteams.map(async (fantasyteam) => {
+      const refplayers = await prisma.refPlayer.findMany({
+        where: {
+          id: {
+            in: fantasyteam.playerIds,
+          },
+        },
+      });
+      return {fantasyteam, refplayers}
+    });
+
+    const result1 = await Promise.all(refplayerspromise)
+    console.log(result1);
+    return res.json({users, result1});
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal server error in league.js for getting users from league",
+    });
   }
 });
 

@@ -26,15 +26,12 @@
 
 .league-members {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    border: 1px solid red;
+    align-items: flex-start;
     border-radius: 15px;
-    width: 50vw;
-    height: 60px;
-    background-color: white;
-    margin: 10px 0;
-    cursor: pointer;
+    padding: 10px;
+    gap: 10px;
 }
 
 .members-list {
@@ -45,4 +42,29 @@
     background-color: lightgray;
     height: 400px;
     overflow-y: auto;
+    margin-top: 200px;
+}
+
+.member-card {
+    border: 1px solid red;
+    border-radius: 15px;
+    width: 150px;
+    height: 60px;
+    background-color: white;
+    margin: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.trade-proposal-button {
+    width: 100px;
+    height: 40px;
 }

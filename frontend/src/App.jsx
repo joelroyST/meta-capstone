@@ -65,7 +65,7 @@ function App() {
           element={<LeaguePage user={user} setUser={setUser} handleLogout={handleLogout} />}
         />
         <Route
-          path="/fantasy-roster/:userId/:leagueId"
+          path="/:userId/:leagueId/fantasyteam"
           element={<FantasyRoster user={user} setUser={setUser} handleLogout={handleLogout} />}
         />
         <Route
