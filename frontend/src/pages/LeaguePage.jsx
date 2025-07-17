@@ -3,22 +3,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import SidebarModal from "../components/SideBarModal";
 import AccountModal from "../Components/AccountModal";
+import ProposeTradeModal from "../components/ProposeTradeModal";
 import "./LeaguePage.css";
 
-const LeaguePage = ({user, setUser, handleLogout }) => {
+const LeaguePage = ({ user, setUser, handleLogout }) => {
   const { leagueId } = useParams();
   const navigate = useNavigate();
   const [league, setLeague] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
+  const [showTradeModal, setShowTradeModal] = useState(false);
 
   useEffect(() => {
     const fetchLeague = async () => {
-      console.log("leagueId: ", leagueId);
       try {
         const res = await fetch(`http://localhost:5000/api/league/${leagueId}`);
         const data = await res.json();
-        setLeague(data.league);
+        const temp = data.league;
+        setLeague(temp);
       } catch (error) {
         console.log("LeaguePage error fetching league: ", error);
         navigate("/fantasy-basketball");
@@ -34,7 +36,13 @@ const LeaguePage = ({user, setUser, handleLogout }) => {
         onHamburgClick={() => setOpenSidebar((prev) => !prev)}
         onProfileClick={() => setOpenModal(true)}
       />
-      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} handleLogout={handleLogout} />}
+      {openModal && (
+        <AccountModal
+          setOpenModal={setOpenModal}
+          user={user}
+          handleLogout={handleLogout}
+        />
+      )}
       {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
       <div className="league-top-container">
         <button
@@ -51,6 +59,17 @@ const LeaguePage = ({user, setUser, handleLogout }) => {
           <p>League ID: {league?.leagueId}</p>
           <p>Number of Members: {league?.users?.length || 0}</p>
         </div>
+        <button
+          className="trade-proposal-button"
+          onClick={() => setShowTradeModal(true)}>
+          Create Trade
+          </button>
+          <ProposeTradeModal
+            open={showTradeModal}
+            onClose={() => setShowTradeModal(false)}
+            leagueId={leagueId}
+          
+          />
       </div>
       <div className="members-list">
         <div className="league-members">
@@ -59,7 +78,9 @@ const LeaguePage = ({user, setUser, handleLogout }) => {
               <div
                 key={user.id}
                 className="member-card"
-                onClick={() => navigate(`/fantasy-roster/${user.id}/${league?.leagueId}`)}>
+                onClick={() =>
+                  navigate(`/${user.id}/${league?.leagueId}/fantasyteam`)
+                }>
                 <h4 className="member-name">{user.name}</h4>
               </div>
             ))

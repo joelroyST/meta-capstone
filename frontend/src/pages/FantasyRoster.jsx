@@ -8,6 +8,7 @@ import "./FantasyRoster.css";
 const FantasyRoster = ({ user, setUser, handleLogout }) => {
   const { userId, leagueId } = useParams();
   const [players, setPlayers] = useState([]);
+  const [dataPlayers, setDataPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -32,6 +33,24 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
     };
     fetchRoster();
   }, [userId, leagueId]);
+
+  useEffect(() => {
+    const fetchAllPlayers = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/refPlayers");
+        if (!res.ok) {
+          console.error(
+            "There is an error in fetching players PlayerMarketplace.jsx"
+          );
+        }
+        const data = await res.json();
+        setDataPlayers(data);
+      } catch (error) {
+        console.error("Error trying to fetch players in marketplace: ", error);
+      }
+    };
+    fetchAllPlayers();
+  }, []);
 
   const handleRemovePlayer = async (playerId) => {
     try {
@@ -91,6 +110,17 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
                     }>
                     {playerId ? (
                       <div>
+                        <p>{`Player Name: ${
+                          dataPlayers.find((player) => player.id === playerId)
+                            ? dataPlayers.find(
+                                (player) => player.id === playerId
+                              ).metadata.firstname +
+                              " " +
+                              dataPlayers.find(
+                                (player) => player.id === playerId
+                              ).metadata.lastname
+                            : "Unknown"
+                        }`}</p>
                         <p>{`Player ID: ${playerId}`}</p>
                         <button
                           onClick={() => handleRemovePlayer(playerId)}

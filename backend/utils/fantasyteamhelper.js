@@ -92,4 +92,26 @@ async function removePlayerFromFantasyTeam(userId, leagueId, playerId) {
   return updatedTeam;
 }
 
-module.exports = {addPlayerToFantasyTeam, removePlayerFromFantasyTeam};
+async function createFantasyTeam(userId, leagueId) {
+  const existingTeam = await prisma.fantasyTeam.findUnique({
+    where: { userId_leagueId: { userId, leagueId } },
+  });
+
+  if (existingTeam) {
+    return res.status(400).json({
+      success: false,
+      error: "User already in fantasy team in this league",
+    });
+  }
+
+  const fantasyTeam = await prisma.fantasyTeam.create({
+    data: {
+      userId,
+      leagueId,
+      name: "My team",
+      playerIds: [],
+    },
+  });
+}
+
+module.exports = {addPlayerToFantasyTeam, removePlayerFromFantasyTeam, createFantasyTeam};
