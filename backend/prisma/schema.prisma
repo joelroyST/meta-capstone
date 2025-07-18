@@ -90,11 +90,15 @@ model FantasyTeam {
 }
 
 model Trade {
-  recordId    Int   @id @default(autoincrement())
-  tradeId     Int
-  proposerId  Int
-  user        User  @relation(fields: [proposerId], references: [id])
-  playersTo Int[]
-  userId      Int
-  confirmation Int
+  recordId           Int   @id @default(autoincrement())
+  tradeId            Int
+  proposerId         Int
+  proposer           User  @relation(fields: [proposerId], references: [id])
+  user1Id            Int
+  user2Id            Int
+  user1PlayersToGive Int[] // Player IDs user1 is giving to user2
+  user2PlayersToGive Int[] // Player IDs user2 is giving to user1
+  leagueId           Int
+  confirmationUser1     Int      @default(1) 
+  confirmationUser2     Int      @default(1)
 }

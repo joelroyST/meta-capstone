@@ -66,3 +66,23 @@
     text-align: center;
     height: 80px;
 }
+
+.view-trades-button {
+    display: flex;
+    justify-content: center;
+}
+
+.trades-button {
+    background-color: white;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    width: 30vw;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    align-items: center;
+    border: 3px solid black;
+    cursor: pointer;
+}

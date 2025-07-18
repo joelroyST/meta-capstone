@@ -1,0 +1,92 @@
+body {
+  background-color: rgb(231, 235, 241);
+}
+
+.trade-page {
+  padding: 24px;
+  font-family: sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.trade-page h1 {
+  font-size: 40px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+section h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.trade-card {
+  background: white;
+  padding: 12px;
+  border: 1px solid rgb(224, 224, 224);
+  border-radius: 10px;
+  border-left: 5px solid rgb(25, 118, 210);
+  transition: box-shadow 0.2s;
+}
+
+.trade-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.trade-card p {
+  font-size: 16px;
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+.trade-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.trade-buttons button {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.trade-buttons button:first-child {
+  background-color: rgb(76, 175, 80);
+  color: white;
+}
+
+.trade-buttons button:first-child:hover {
+  background-color: rgb(67, 160, 71);
+}
+
+.trade-card-status {
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.trade-card-status.pending {
+  color: #f9a825;
+}
+
+.trade-card-status.confirmed {
+  color: #388e3c;
+}
+
+.trade-card-status.rejected {
+  color: #d32f2f;
+}

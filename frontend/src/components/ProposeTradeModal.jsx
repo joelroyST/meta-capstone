@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ProposeTradeModal.css";
 
-const ProposeTradeModal = ({ open, onClose, leagueId }) => {
+const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
   const [questionIndex, setQuestionindex] = useState(0);
   const [leagueUsers, setLeagueUsers] = useState([]);
   const [fantasyTeams, setFantasyTeams] = useState([]);
@@ -59,7 +59,7 @@ const ProposeTradeModal = ({ open, onClose, leagueId }) => {
   const updateTradeLeg = (legIndex, field, value) => {
     setTradeLegs((prevLegs) => {
       const newLegs = [...prevLegs];
-      newLegs[legIndex] = { ...newLegs[legIndex], [field]: value }; 
+      newLegs[legIndex] = { ...newLegs[legIndex], [field]: value };
       return newLegs;
     });
   };
@@ -74,7 +74,7 @@ const ProposeTradeModal = ({ open, onClose, leagueId }) => {
     updateTradeLeg(legIndex, fieldParticipant, userId);
 
     const user = fantasyTeams.find(
-      (user) => user.fantasyteam.userId === parseInt(userId) 
+      (user) => user.fantasyteam.userId === parseInt(userId)
     );
 
     if (user && user.fantasyteam && user.refplayers) {
@@ -164,11 +164,38 @@ const ProposeTradeModal = ({ open, onClose, leagueId }) => {
     }
   };
 
-  const handleSubmit = () => {
-    if (questionIndex === 1 && !validateTradeLegs()) return;
-    console.log("Trade proposal submitted with legs:", tradeLegs);
+  // const handleSubmit = () => {
+  //   if (questionIndex === 1 && !validateTradeLegs()) return;
+  //   console.log("Trade proposal submitted with legs:", tradeLegs);
+  //   handleClose();
+  // };
+
+  const handleSubmit = async () => {
+  if (!validateTradeLegs()) return;
+
+  try {
+    const payload = {
+      leagueId,
+      proposerId: user.id, 
+      tradeLegs,
+    };
+
+    const response = await fetch("http://localhost:5000/api/trade", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) throw new Error("Failed to submit trade proposal");
+
+    const result = await response.json();
+    console.log("Trade proposals submitted:", result);
     handleClose();
-  };
+  } catch (error) {
+    console.error(error);
+    setValidationError("Failed to submit trade proposal. Please try again.");
+  }
+};
 
   // This adds a new empty trade leg
   const addTradeLeg = () => {
@@ -332,7 +359,10 @@ const ProposeTradeModal = ({ open, onClose, leagueId }) => {
                                 player.id
                               )}
                               onChange={() => {
-                                const selected = [...leg.user1PlayersToGive, player.id];
+                                const selected = [
+                                  ...leg.user1PlayersToGive,
+                                  player.id,
+                                ];
                                 updateTradeLeg(
                                   legIndex,
                                   "user1PlayersToGive",
@@ -358,7 +388,10 @@ const ProposeTradeModal = ({ open, onClose, leagueId }) => {
                                 player.id
                               )}
                               onChange={() => {
-                                const selected = [...leg.user2PlayersToGive, player.id];
+                                const selected = [
+                                  ...leg.user2PlayersToGive,
+                                  player.id,
+                                ];
                                 updateTradeLeg(
                                   legIndex,
                                   "user2PlayersToGive",
