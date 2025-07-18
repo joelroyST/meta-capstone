@@ -63,13 +63,13 @@ const LeaguePage = ({ user, setUser, handleLogout }) => {
           className="trade-proposal-button"
           onClick={() => setShowTradeModal(true)}>
           Create Trade
-          </button>
-          <ProposeTradeModal
-            open={showTradeModal}
-            onClose={() => setShowTradeModal(false)}
-            leagueId={leagueId}
-          
-          />
+        </button>
+        <ProposeTradeModal
+          user={user}
+          open={showTradeModal}
+          onClose={() => setShowTradeModal(false)}
+          leagueId={leagueId}
+        />
       </div>
       <div className="members-list">
         <div className="league-members">

@@ -7,6 +7,7 @@ import FantasyBasketball from "./pages/FantasyBasketball";
 import LeaguePage from "./pages/LeaguePage";
 import FantasyRoster from "./pages/FantasyRoster";
 import PlayerMarketplace from "./pages/PlayerMarketplace";
+import TradePage from "./pages/TradePage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -71,6 +72,10 @@ function App() {
         <Route
           path="/player-marketplace"
           element={<PlayerMarketplace user={user} setUser={setUser} handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/view-trades"
+          element={<TradePage user={user} setUser={setUser} handleLogout={handleLogout} />}
         />
       </Routes>
     </Router>

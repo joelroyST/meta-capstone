@@ -20,6 +20,10 @@ const playerRouter = require("./routes/player");
 server.use("/api", playerRouter);
 const marketplaceRouter = require("./routes/marketplace");
 server.use("/api", marketplaceRouter);
+const tradeRouter = require("./routes/trade");
+server.use("/api", tradeRouter);
+const tradepageRouter = require("./routes/tradepage");
+server.use("/api", tradepageRouter);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

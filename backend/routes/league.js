@@ -38,7 +38,6 @@ router.post("/", async (req, res) => {
   }
 
   if (!name || !userId) {
-    console.log("POST in league.js is missing name or userId", req.body);
     return res.status(400).json({ error: "Name and userId are required" });
   }
 
@@ -61,7 +60,6 @@ router.post("/", async (req, res) => {
 
     createFantasyTeam(userId, newLeague.leagueId);
 
-    console.log("POST in league.js creating new league: ", newLeague);
     return res.status(201).json({ league: newLeague });
   } catch (error) {
     console.error("POST league.js has an error creating league: ", error);
@@ -148,7 +146,6 @@ router.get("/:leagueId/users-with-players", async (req, res) => {
         }
       }
     })
-    console.log("this is users:", users)
 
     const fantasyteams = await prisma.fantasyTeam.findMany({
       where: {
@@ -160,7 +157,6 @@ router.get("/:leagueId/users-with-players", async (req, res) => {
         }
       }
     })
-    console.log("This is the fantasy:", fantasyteams);
 
     const refplayerspromise = fantasyteams.map(async (fantasyteam) => {
       const refplayers = await prisma.refPlayer.findMany({
@@ -174,7 +170,6 @@ router.get("/:leagueId/users-with-players", async (req, res) => {
     });
 
     const result1 = await Promise.all(refplayerspromise)
-    console.log(result1);
     return res.json({users, result1});
 
   } catch (error) {

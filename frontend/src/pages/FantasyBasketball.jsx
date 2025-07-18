@@ -117,6 +117,11 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
         setOpenSidebar(false);
     }
 
+    const handleNavigateViewTradesPage = () => {
+        navigate('/view-trades');
+        setOpenSidebar(false);
+    }
+
   return (
     <div className="fantasy-basketball-page">
       <TopBar
@@ -172,6 +177,9 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
       </div>
       <div className="player-marketplace-button">
         <button className="marketplace-button" onClick={handleNavigatePlayerMarketPlace}>Enter the Player Marketplace!</button>
+      </div>
+      <div className="view-trades-button">
+        <button className="trades-button" onClick={handleNavigateViewTradesPage}>Enter the View Trades Page!</button>
       </div>
       {openLeagueModal && (
         <LeagueModal
