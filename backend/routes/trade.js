@@ -8,9 +8,7 @@ const { executeTrade } = require("../utils/tradehelper");
 // To create a trade
 router.post("/trade", async (req, res) => {
   const { proposerId, leagueId, tradeLegs } = req.body;
-  function generateRandomId(min = 100000, max = 999999) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  
   const tradeId = generateRandomId();
   try {
     for (const leg of tradeLegs) {
@@ -107,5 +105,9 @@ router.patch("/trade/:id/status", async (req, res) => {
       .json({ error: "There's been a server error while updating trade status" });
   }
 });
+
+function generateRandomId(min = 100000, max = 999999) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
 module.exports = router;

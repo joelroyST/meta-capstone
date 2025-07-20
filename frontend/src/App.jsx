@@ -8,6 +8,7 @@ import LeaguePage from "./pages/LeaguePage";
 import FantasyRoster from "./pages/FantasyRoster";
 import PlayerMarketplace from "./pages/PlayerMarketplace";
 import TradePage from "./pages/TradePage";
+import PlayerSubscriptions from "./pages/PlayerSubscriptions";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -60,6 +61,10 @@ function App() {
         <Route
           path="/fantasy-basketball"
           element={<FantasyBasketball user={user} setUser={setUser} handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/player-subscriptions"
+          element={<PlayerSubscriptions user={user} setUser={setUser} handleLogout={handleLogout} />}
         />
         <Route
           path="/league/:userId/:leagueId"
