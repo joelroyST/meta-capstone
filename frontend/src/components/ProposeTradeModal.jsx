@@ -164,12 +164,6 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
     }
   };
 
-  // const handleSubmit = () => {
-  //   if (questionIndex === 1 && !validateTradeLegs()) return;
-  //   console.log("Trade proposal submitted with legs:", tradeLegs);
-  //   handleClose();
-  // };
-
   const handleSubmit = async () => {
   if (!validateTradeLegs()) return;
 

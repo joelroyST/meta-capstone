@@ -32,8 +32,8 @@ const AccountModal = ({ setOpenModal, user, handleLogout }) => {
           </button>
         </div>
         <div className="modal-body">
-          <button onClick={handleLogin}>Login</button>
-          <button onClick={handleAccountLogout}>Logout</button>
+          {!user && <button onClick={handleLogin}>Login</button>}
+          {user && <button onClick={handleAccountLogout}>Logout</button>}
           <button>Settings</button>
         </div>
         <div className="profile-section">

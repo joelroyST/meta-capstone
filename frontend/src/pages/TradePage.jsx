@@ -13,10 +13,10 @@ const TradePage = ({ user }) => {
     const fetchAll = async () => {
       setLoading(true);
       try {
-        const tradesResponse = await fetch(
+        const tradeLegs = await fetch(
           `http://localhost:5000/api/trade/user/${user.id}`
         );
-        const trades = await tradesResponse.json();
+        const trades = await tradeLegs.json();
         const pending = trades.filter(
           (trade) => trade.confirmationUser1 === 1 || trade.confirmationUser2 === 1
         );
@@ -164,7 +164,7 @@ const TradePage = ({ user }) => {
       ) : (
         <>
           <section>
-            <h2>Pending Trades</h2>
+            <h2 className="trade-page-subtitle">Pending Trades</h2>
             {pendingTrades.length === 0 ? (
               <p>No pending trades.</p>
             ) : (
@@ -173,7 +173,7 @@ const TradePage = ({ user }) => {
           </section>
 
           <section>
-            <h2>Trade History</h2>
+            <h2 className="trade-page-subtitle">Trade History</h2>
             {tradeHistory.length === 0 ? (
               <p>No trade history yet.</p>
             ) : (

@@ -21,11 +21,17 @@ function SidebarModal({setOpenSidebar}) {
         setOpenSidebar(false);
     }
 
+    const handleNavigatePlayerSubscriptions = () => {
+        navigate('/player-subscriptions');
+        setOpenSidebar(false);
+    }
+
   return (
     <div className='sidebar-modal-overlay' onClick={handleClose}>
         <div className='sidebar-modal open' onClick={(event) => event.stopPropagation()}>
             <button onClick={handleHomeClick} className='sidebar-title'>Home</button>
             <h2 className='sidebar-title1' onClick={handleNavigateFantasyBasketball}>Fantasy Basketball</h2>
+            <h2 className='sidebar-title2' onClick={handleNavigatePlayerSubscriptions}>Player Subscriptions</h2>
             <h2 className='sidebar-title'>Hot News</h2>
             <h2 className='sidebar-title'>NBA Teams</h2>
         </div>
