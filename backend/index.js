@@ -24,6 +24,8 @@ const tradeRouter = require("./routes/trade");
 server.use("/api", tradeRouter);
 const tradepageRouter = require("./routes/tradepage");
 server.use("/api", tradepageRouter);
+const subscriptionRouter = require("./routes/subscription");
+server.use("/api", subscriptionRouter);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

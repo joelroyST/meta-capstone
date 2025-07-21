@@ -18,7 +18,7 @@ const PlayerSubscriptions = ({user, setUser, handleLogout}) => {
       />
       {openModal && <AccountModal setOpenModal={setOpenModal} user={user} handleLogout={handleLogout} />}
       {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
-      {openAddSubscriptionModal && <AddSubscriptionModal setOpenAddSubscriptionModal={setOpenAddSubscriptionModal} /> }
+      {openAddSubscriptionModal && <AddSubscriptionModal user={user} setOpenAddSubscriptionModal={setOpenAddSubscriptionModal} /> }
     <h1 className="subscriptions-title">Player Subscription</h1>
     <button className="add-subscription-button" onClick={() => setOpenAddSubscriptionModal(true)}>Add Player Subscription</button>
     <div className="subscriptions-placeholder">

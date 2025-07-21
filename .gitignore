@@ -27,3 +27,5 @@ dist-ssr
 
 /generated/prisma/
 backend/prisma/migrations/*
+package.json
+package-lock.json

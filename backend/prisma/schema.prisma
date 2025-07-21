@@ -23,6 +23,8 @@ model User {
   favoritePlayers Int[] // Changed to Int[] becuase id of model Player is an Int type
   leagues         Int[] // Changed to Int[] because id of model League is an Int type
   Trade           Trade[]
+
+  Subscription Subscription[]
 }
 
 model Team {
@@ -33,10 +35,27 @@ model Team {
   confName String
 }
 
+model Game {
+  gameId                  Int                       @id
+  date                    DateTime
+  arena                   String?
+  city                    String?
+  state                   String?
+  homeTeamId              Int
+  awayTeamId              Int
+  homeTeamPoints          Int
+  awayTeamPoints          Int
+  homeTeamLogo            String?
+  awayTeamLogo            String?
+  PlayerStatisticsPerGame PlayerStatisticsPerGame[]
+}
+
 model PlayerStatisticsPerGame {
   id            Int    @id @default(autoincrement())
-  gameId        String
-  teamId        String
+  gameId        Int
+  game          Game   @relation(fields: [gameId], references: [gameId])
+  playerId      Int
+  teamId        Int
   points        Int
   position      String
   minPlayed     String
@@ -44,26 +63,49 @@ model PlayerStatisticsPerGame {
   fga           Float
   ftm           Int
   fta           Int
-  ftp           Float
+  ftp           String
   tpm           Int
   tpa           Int
-  tpp           Float
+  tpp           String
   offReb        Int
-  debReb        Int
+  defReb        Int
   totReb        Int
   assists       Int
   personalFouls Int
   steals        Int
   turnovers     Int
   blocks        Int
-  plusMinus     Int
-  playerId      Int
+  plusMinus     String
+  comment       String?
+
+  @@unique([playerId, gameId]) // Prevents duplicate entries for the same player and game (one row per player per game)
+  @@index([playerId]) // Helps for faster searches when fetching for games of a specified time for a specific player
+  @@index([gameId]) // Faster fetching for player stats in a specific game
 }
 
-model League {
-  leagueId Int    @id
-  name     String
-  users    Int[] // Changed to Int[] because model User has an id of type Int
+model Subscription {
+  id                Int      @id @default(autoincrement())
+  userId            Int
+  user              User     @relation(fields: [userId], references: [id])
+  playerId          Int
+  startDate         DateTime
+  endDate           DateTime
+  statsUpdateWindow Int // Ex: 7 => Jan. 1 - Jan. 7 is one window (7 days)
+  updateFrequency   Int
+  createdAt         DateTime @default(now())
+
+  SubscriptionSummary SubscriptionSummary[]
+}
+
+model SubscriptionSummary {
+  id             Int          @id @default(autoincrement())
+  subscriptionId Int
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+  windowStart    DateTime
+  windowEnd      DateTime
+  createdAt      DateTime     @default(now())
+
+  @@unique([subscriptionId, windowStart, windowEnd]) // Makes sure to not create duplicate summaries for the same player in the same time range
 }
 
 model Player {
@@ -78,6 +120,12 @@ model Player {
 model RefPlayer {
   id       Int  @id
   metadata Json
+}
+
+model League {
+  leagueId Int    @id
+  name     String
+  users    Int[] // Changed to Int[] because model User has an id of type Int
 }
 
 model FantasyTeam {
@@ -99,6 +147,6 @@ model Trade {
   user1PlayersToGive Int[] // Player IDs user1 is giving to user2
   user2PlayersToGive Int[] // Player IDs user2 is giving to user1
   leagueId           Int
-  confirmationUser1     Int      @default(1) 
-  confirmationUser2     Int      @default(1)
+  confirmationUser1  Int   @default(1)
+  confirmationUser2  Int   @default(1)
 }

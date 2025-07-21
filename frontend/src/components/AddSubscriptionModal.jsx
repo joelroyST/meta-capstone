@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
+import DatePickerComponent from "./DatePicker";
 import "./AddSubscriptionModal.css";
 
-const AddSubscriptionModal = ({setOpenAddSubscriptionModal}) => {
-  const [openModal, setOpenModal] = useState(false);
+const AddSubscriptionModal = ({user, setOpenAddSubscriptionModal}) => {
   const [players, setPlayers] = useState([]);
   const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
-  const [subscriptionLength, setSubscriptionLength] = useState(1)
-  const [summaryFrequency, setSummaryFrequency] = useState(1);
+  const [selectedDateRange, setSelectedDateRange] = useState([null, null])
+  const [summaryFrequency, setSummaryFrequency] = useState(7);
 
   useEffect(() => {
     const fetchAllPlayers = async () => {
@@ -46,15 +46,52 @@ const AddSubscriptionModal = ({setOpenAddSubscriptionModal}) => {
     }
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!selectedPlayer) {
+        alert("Please select a player to subscribe to!")
+    }
+
+    const [subscriptionStart, subscriptionEnd] = selectedDateRange;
+    const formattedStart = subscriptionStart.toISOString().split("T")[0];
+    const formattedEnd = subscriptionEnd.toISOString().split("T")[0];
+       
+    try {
+        const response = await fetch("http://localhost:5000/api/subscription/create-subscription", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                userId: user.id,
+                playerId: selectedPlayer.id,
+                startDate: formattedStart,
+                endDate: formattedEnd,
+                summaryFrequencyWeeks: summaryFrequency
+            })
+        })
+
+        console.log("This is the respnose: ", response)
+
+
+        if (!response.ok) {
+            const err = await response.json();
+            console.error("Erorr creating subscription", err)
+            alert("failed to create subscription try again")
+        }
+
+    alert("Subscription created successfully")
     setOpenAddSubscriptionModal(false);
+    } catch (error) {
+        console.error("Error creating subscription handlesubmit: ", error);
+        alert("Something went wrong, please try again")
+    }
   };
 
   return (
     <div className="modal-overlay" onClick={() => setOpenAddSubscriptionModal(false)}>
       <div className="modal-content" onClick={(event) => event.stopPropagation()}>
         <h2>Create a New Player Subscription!</h2>
+        <p style={{color: "gray", textAlign: "center"}}>All subscriptions must be within the 2021 NBA season (October 19, 2021 - April 10, 2022)</p>
         <label>What player would you like to subscribe to?</label>
         <input
           type="text"
@@ -73,22 +110,18 @@ const AddSubscriptionModal = ({setOpenAddSubscriptionModal}) => {
             </div>
           ))}
         </div>
-
-        <label>How long will your subscription be for? (weeks)</label>
-        <input
-          type="number"
-          min="1"
-          value={subscriptionLength}
-          onChange={(event) =>
-            setSubscriptionLength(Number(event.target.value))
-          }></input>
         
         <label>How frequent do you want your subscription summaries?</label>
         <select value={summaryFrequency} onChange={(event) => setSummaryFrequency(Number(event.target.value))}>
-            <option value={1}>Every 1 Week</option>
-            <option value={2}>Every 2 Weeks</option>
-            <option value={3}>Every 4 Weeks</option>
+            <option value={7}>Every 1 Week</option>
+            <option value={14}>Every 2 Weeks</option>
+            <option value={28}>Every 4 Weeks</option>
         </select>
+
+         <label>What is the duration of your subscription?</label>
+          <div className="date-picker-component">
+        <DatePickerComponent summaryFrequency={summaryFrequency} onDateRangeChange={(subscriptionStart, subscriptionEnd) => setSelectedDateRange([subscriptionStart, subscriptionEnd])} />
+          </div>
         <button className="add-player-subscription-button" onClick={handleSubmit}>Confirm Subscription</button>
         <button className="add-player-subscription-button" onClick={() => setOpenAddSubscriptionModal(false)}>Cancel</button>
       </div>
