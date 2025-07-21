@@ -70,9 +70,6 @@ const AddSubscriptionModal = ({user, setOpenAddSubscriptionModal}) => {
             })
         })
 
-        console.log("This is the respnose: ", response)
-
-
         if (!response.ok) {
             const err = await response.json();
             console.error("Erorr creating subscription", err)
