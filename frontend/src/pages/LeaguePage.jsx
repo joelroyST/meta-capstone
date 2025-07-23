@@ -22,7 +22,7 @@ const LeaguePage = ({ user, setUser, handleLogout }) => {
         const temp = data.league;
         setLeague(temp);
       } catch (error) {
-        console.log("LeaguePage error fetching league: ", error);
+        console.error("LeaguePage error fetching league: ", error);
         navigate("/fantasy-basketball");
       }
     };
