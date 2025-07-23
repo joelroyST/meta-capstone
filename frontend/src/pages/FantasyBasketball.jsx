@@ -67,7 +67,7 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
           `http://localhost:5000/api/league/user/${data.user.id}`
         );
         const leaguesData = await leaguesResponse.json();
-        console.log("Leagues fetched:", leaguesData);
+        console.error("Leagues fetched:", leaguesData);
         setLeagues(leaguesData);
       } else {
         console.warn("No user returned – setting user to null");
@@ -101,7 +101,7 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
         setLeagues((prev) => [...prev, data.league]);
         setLeagueName("");
       } else {
-        console.log("Create league error: ", data.error);
+        console.error("Create league error: ", data.error);
       }
     } catch (error) {
       console.error("Create league fetch error: ", error);

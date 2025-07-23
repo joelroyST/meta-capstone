@@ -1,0 +1,71 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 10px;
+}
+
+.summary-modal-title {
+    text-align: center;
+}
+
+.summary-window {
+    margin-bottom: 20px;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.game-summary {
+    border-top: 1px solid rgb(204, 204, 204);
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.teams-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.player-stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.player-stats-table th,
+.player-stats-table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.player-stats-table th {
+    background-color: rgb(242, 242, 242);
+    font-weight: bold;
+}
+
+.player-stats-table tr:nth-child(even) {
+    background-color: rgb(249, 249, 249);
+}
+
+.player-stats-table tr:hover {
+    background-color: rgb(233, 233, 233);
+}
