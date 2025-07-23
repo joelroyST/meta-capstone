@@ -1,5 +1,5 @@
 import React from "react";
-import calculatePlayerValue from "../../../backend/utils/calculateplayervalue";
+import playerStatsHelper from "../../../backend/utils/playerstatshelper";
 import "./SubscriptionSummaryModal.css";
 
 const SubscriptionSummaryModal = ({ summary, onClose }) => {
@@ -64,18 +64,8 @@ const SubscriptionSummaryModal = ({ summary, onClose }) => {
     comment: "Comment",
   };
 
-  const playerAverages = {};
-  if (validGames.length > 0) {
-    statKeys.forEach((statKey) => {
-      const total = validGames.reduce((sum, game) => {
-        const value = parseFloat(game.playerStats[statKey]);
-        return sum + (isNaN(value) ? 0 : value);
-      }, 0);
-      playerAverages[statKey] = (total / validGames.length).toFixed(2);
-    });
-  }
-
-  const playerValue = calculatePlayerValue(validGames);
+  const playerAverages = playerStatsHelper.computePlayerAveragesKey(validGames);
+  const playerValue = playerStatsHelper.calculatePlayerValueKey(validGames);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -145,7 +135,7 @@ const SubscriptionSummaryModal = ({ summary, onClose }) => {
 
         {validGames.length > 0 && (
           <p style={{ marginTop: "16px", fontWeight: "bold" }}>
-            Player Value for This Subscription: {playerValue}
+            Player Value During This Window: {playerValue}
           </p>
         )}
 
