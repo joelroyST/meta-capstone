@@ -51,9 +51,9 @@ model Game {
 }
 
 model PlayerStatisticsPerGame {
-  id            Int    @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   gameId        Int
-  game          Game   @relation(fields: [gameId], references: [gameId])
+  game          Game    @relation(fields: [gameId], references: [gameId])
   playerId      Int
   teamId        Int
   points        Int
@@ -107,6 +107,17 @@ model SubscriptionSummary {
   @@unique([subscriptionId, windowStart, windowEnd]) // Makes sure to not create duplicate summaries for the same player in the same time range
 }
 
+model PlayerWindowCache {
+  id            Int      @id @default(autoincrement())
+  playerId      Int
+  windowStart   DateTime
+  windowEnd     DateTime
+  gamesWithStats     Json
+  playerAverages Json
+
+  @@unique([playerId, windowStart, windowEnd])
+}
+
 model Player {
   playerId      Int     @id
   firstName     String
@@ -119,7 +130,7 @@ model Player {
 model RefPlayer {
   id       Int  @id
   metadata Json
-  value    Int @default(0)
+  value    Int  @default(0) // Fixed for a single season
 }
 
 model League {

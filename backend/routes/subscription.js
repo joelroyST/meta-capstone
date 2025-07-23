@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const transformPlayerStatisticsToGameWithStats = require("../utils/transformplayerstatistics");
+const {transformPlayerStatisticsToGameWithStats} = require("../utils/transformplayerstatistics");
+const { getCachedPlayerWindow, setCachedPlayerWindow} = require("../utils/cachehelper")
+const playerStatsHelper = require("../utils/playerstatshelper").default;
+const computePlayerAverages = playerStatsHelper.computePlayerAveragesKey;
 
 router.post("/subscription/create-subscription", async (req, res) => {
   try {
@@ -88,28 +91,45 @@ router.get("/subscription/:subscriptionId/summary", async (req, res) => {
                 windowEnd.setTime(subscriptionEnd.getTime())
             }
 
-            const playerStatistics = await prisma.playerStatisticsPerGame.findMany({
-                where: {
-                    playerId: playerId,
-                    game: {
-                        date: {
-                            gte: windowStart,
-                            lte: windowEnd,
+            const cached = await getCachedPlayerWindow(playerId, windowStart, windowEnd);
+
+            if (cached) { // If the specific window is already cached, then we can push it to statisticsPerWindow
+                statisticsPerWindows.push({
+                    windowStart,
+                    windowEnd,
+                    games: cached.gamesWithStats,
+                    playerAverages: cached.playerAverages,
+                })
+            } else {
+                const playerStatistics = await prisma.playerStatisticsPerGame.findMany({
+                    where: {
+                        playerId: playerId,
+                        game: {
+                            date: {
+                                gte: windowStart,
+                                lte: windowEnd,
+                            },
                         },
                     },
-                },
-                include: {
-                    game: true,
+                    include: {
+                        game: true,
                     }
-            })
+                })
 
-            const gamesWithStats = transformPlayerStatisticsToGameWithStats(playerStatistics);
+                const gamesWithStats = transformPlayerStatisticsToGameWithStats(playerStatistics); 
+                const playerAverages = computePlayerAverages(gamesWithStats);
+                
+                if (gamesWithStats.length > 0) {
+                    await setCachedPlayerWindow(playerId, windowStart, windowEnd, gamesWithStats, playerAverages);
+                }
 
-            statisticsPerWindows.push({
-                windowStart,
-                windowEnd,
-                games: gamesWithStats,
-            })
+                statisticsPerWindows.push({
+                    windowStart,
+                    windowEnd,
+                    games: gamesWithStats,
+                    playerAverages,
+                })
+            }
             windowStart.setDate(windowStart.getDate() + updateWindowInDays)
         }
 
