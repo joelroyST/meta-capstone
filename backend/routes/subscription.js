@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const transformPlayerStatisticsToGameWithStats = require("../utils/transformplayerstatistics");
 
 router.post("/subscription/create-subscription", async (req, res) => {
   try {
@@ -29,6 +30,7 @@ router.post("/subscription/create-subscription", async (req, res) => {
   }
 });
 
+// Get all subscriptions for a user
 router.get("/subscription/user/:userId", async (req, res) => {
     const userId = parseInt(req.params.userId);
     try {
@@ -43,6 +45,7 @@ router.get("/subscription/user/:userId", async (req, res) => {
     }
 })
 
+// Delete a subscription
 router.delete("/subscription/:id", async (req, res) => {
     const id = parseInt(req.params.id);
     try {
@@ -52,6 +55,68 @@ router.delete("/subscription/:id", async (req, res) => {
     } catch (error) {
         console.error("Error deleting the subscription: ", error);
         res.status(500).json({message: "Failed to delete subscription"})
+    }
+})
+
+// Get all games and player stats for a subcription and group them into a window
+router.get("/subscription/:subscriptionId/summary", async (req, res) => {
+    const subscriptionId = parseInt(req.params.subscriptionId);
+
+    try {
+        const subscription = await prisma.subscription.findUnique({
+            where: {id: subscriptionId}
+        })
+
+        if (!subscription) {
+            return res.status(404).json({message: "Subscription not found"})
+        }
+
+        const {playerId, startDate, endDate, updateFrequency} = subscription;
+
+        const subscriptionStart = new Date(startDate)
+        const subscriptionEnd = new Date(endDate)
+        const updateWindowInDays = updateFrequency;
+        const statisticsPerWindows = [];
+
+        let windowStart = new Date(subscriptionStart)
+
+        while (windowStart <= subscriptionEnd) {
+            const windowEnd = new Date(windowStart);
+            windowEnd.setDate(windowEnd.getDate() +  updateWindowInDays - 1);
+
+            if (windowEnd > subscriptionEnd) {
+                windowEnd.setTime(subscriptionEnd.getTime())
+            }
+
+            const playerStatistics = await prisma.playerStatisticsPerGame.findMany({
+                where: {
+                    playerId: playerId,
+                    game: {
+                        date: {
+                            gte: windowStart,
+                            lte: windowEnd,
+                        },
+                    },
+                },
+                include: {
+                    game: true,
+                    }
+            })
+
+            const gamesWithStats = transformPlayerStatisticsToGameWithStats(playerStatistics);
+
+            statisticsPerWindows.push({
+                windowStart,
+                windowEnd,
+                games: gamesWithStats,
+            })
+            windowStart.setDate(windowStart.getDate() + updateWindowInDays)
+        }
+
+        return res.json(statisticsPerWindows)
+    } catch (error) {
+        console.error("Error generating player summary with stats: ", error);
+        res.status(500).json({message: "Failed to create the player summary"})
     }
 })
 

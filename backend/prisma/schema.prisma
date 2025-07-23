@@ -90,7 +90,6 @@ model Subscription {
   playerId          Int
   startDate         DateTime
   endDate           DateTime
-  statsUpdateWindow Int // Ex: 7 => Jan. 1 - Jan. 7 is one window (7 days)
   updateFrequency   Int
   createdAt         DateTime @default(now())
 
@@ -120,6 +119,7 @@ model Player {
 model RefPlayer {
   id       Int  @id
   metadata Json
+  value    Int @default(0)
 }
 
 model League {
