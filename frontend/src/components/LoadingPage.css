@@ -1,0 +1,26 @@
+.loading-page-container {
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: lightblue;
+}
+
+.basketball-logo {
+    width: 100px;
+    max-width: 400px;
+    justify-self: center;
+    animation: beat 0.25s infinite alternate;
+    transform-origin: center;
+}
+
+@keyframes beat {
+    to {
+        transform: scale(1.25);
+    }
+}
