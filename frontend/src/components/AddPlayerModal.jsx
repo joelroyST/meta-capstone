@@ -8,7 +8,7 @@ const AddPlayerModal = ({ player, user, onClose }) => {
   useEffect(() => {
     const fetchUserLeagues = async () => {
       if (!user || !user.id) {
-        console.log("User is undefined or missing id", user);
+        console.error("User is undefined or missing id", user);
         return;
       }
       try {

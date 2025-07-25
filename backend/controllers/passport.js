@@ -15,7 +15,6 @@ passport.use(
     async function (accessToken, refreshToken, profile, cb) {
       try {
         const facebookId = profile.id;
-        console.log(profile);
 
         // Check if user exists in database
         let user = await prisma.user.findUnique({
