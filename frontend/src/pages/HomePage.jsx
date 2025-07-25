@@ -89,10 +89,12 @@ function HomePage({ user, setUser, handleLogout }) {
         <LoadingPage />
       ) : (
         <div className="homepage">
+          <header className="website-title">Sports Pulse</header>
           <TopBar
             onHamburgClick={() => setOpenSidebar((prev) => !prev)}
             onProfileClick={handleOpenModal}
           />
+          
 
           <div className="middle-homepage">
             {/* Player cards section */}
@@ -112,21 +114,6 @@ function HomePage({ user, setUser, handleLogout }) {
                 ))}
               </div>
             </section>
-
-            <div className="trending-news">
-              <div className="trending-news-card">
-                Popular/Trending Sports News
-              </div>
-              <div className="trending-news-card">
-                Popular/Trending Sports News
-              </div>
-              <div className="trending-news-card">
-                Popular/Trending Sports News
-              </div>
-              <div className="trending-news-card">
-                Popular/Trending Sports News
-              </div>
-            </div>
           </div>
 
           {openModal && (

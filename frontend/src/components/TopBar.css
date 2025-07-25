@@ -4,3 +4,11 @@
     justify-content: center !important;
     padding: 15px;
 }
+
+.hamburg {
+    cursor: pointer;
+}
+
+.user-profile-icon {
+    cursor: pointer;
+}

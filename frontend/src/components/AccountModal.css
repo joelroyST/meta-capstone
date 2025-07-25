@@ -44,7 +44,7 @@
 .modal-body button {
     height: 30px;
     border-radius: 20px;
-
+    cursor: pointer;
 }
 
 .profile-section {
