@@ -1,12 +1,24 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const session = require("express-session")
+const dotenv = require("dotenv")
+dotenv.config();
 
 const server = express();
 
 server.use(cors());
 server.use(express.json());
 server.use(morgan("dev"));
+
+server.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * 7} // 1 week
+  })
+)
 
 const authRouter = require("./routes/auth");
 server.use("/auth", authRouter);

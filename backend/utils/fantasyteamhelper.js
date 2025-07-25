@@ -9,14 +9,13 @@ async function isPlayerInAFantasyTeam(playerId, leagueId) {
 
   for (const team of teamsInLeague) {
     if (team.playerIds.includes(playerId)) {
-      console.log(
+      console.error(
         `Player ${playerId} is already owned by user ${team.userId} in league ${leagueId}.`
       );
       return true;
     }
   }
 
-  console.log(`Player ${playerId} is free in league ${leagueId}.`);
   return false;
 }
 
