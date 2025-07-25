@@ -6,6 +6,7 @@ import AccountModal from "../Components/AccountModal";
 import SidebarModal from "../components/SideBarModal";
 import LeagueModal from "../components/LeagueModal";
 import LoadingPage from "../components/LoadingPage";
+import JoinLeague from "../components/JoinLeague";
 
 const FantasyBasketball = ({ user, setUser, handleLogout }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -166,6 +167,7 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
           <div
             className="fantasy-league-roster"
             onClick={() => setOpenLeagueModal(true)}>
+              <JoinLeague user={user} />
             <h2>My Fantasy Leagues:</h2>
             <div className="create-league-container">
               <input

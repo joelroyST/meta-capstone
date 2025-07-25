@@ -180,4 +180,43 @@ router.get("/:leagueId/users-with-players", async (req, res) => {
   }
 });
 
+// Allow user to join an existing league
+router.post("/:leagueId/join", async (req, res) => {
+  const {leagueId} = req.params;
+  const {userId} = req.body;
+
+  if(!userId) {
+    return res.status(400).json({error: "userId is required"})
+  }
+
+  try {
+    const leagueIdNum = parseInt(leagueId, 10);
+
+    const updatedLeague = await prisma.league.update({
+      where: {leagueId: leagueIdNum},
+      data: {
+        users: {
+          push: userId,
+        }
+      }
+    })
+
+    await prisma.user.update({
+      where: {id: userId},
+      data: {
+        leagues: {
+          push: leagueIdNum
+        }
+      }
+    })
+
+    const createdFantasyTeam = await createFantasyTeam(userId, leagueIdNum)
+
+    res.status(200).json({message: "User successfully joined the league", league: updatedLeague, fantasyTeam: createdFantasyTeam})
+  } catch (error) {
+    console.error("Error joining league: ", error)
+    res.status(500).json({error: "Internal server error while joining league"})
+  }
+})
+
 module.exports = router;
