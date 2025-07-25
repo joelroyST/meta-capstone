@@ -97,10 +97,7 @@ async function createFantasyTeam(userId, leagueId) {
   });
 
   if (existingTeam) {
-    return res.status(400).json({
-      success: false,
-      error: "User already in fantasy team in this league",
-    });
+    throw new Error("User already has a fantasy team in this league");
   }
 
   const fantasyTeam = await prisma.fantasyTeam.create({
