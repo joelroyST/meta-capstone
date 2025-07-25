@@ -118,15 +118,6 @@ model PlayerWindowCache {
   @@unique([playerId, windowStart, windowEnd])
 }
 
-model Player {
-  playerId      Int     @id
-  firstName     String
-  lastName      String
-  teamId        String? // Refers to real life team
-  fantasyTeamId String? // Refers to fantasy team
-  value         Int
-}
-
 model RefPlayer {
   id       Int  @id
   metadata Json

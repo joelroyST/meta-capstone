@@ -33,7 +33,7 @@ body {
     margin: 0 15px;
 }
 
-.top-section {
+/* .top-section {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -42,7 +42,7 @@ body {
     top: 0;
     z-index: 999;
     padding: 10px;
-}
+} */
 
 .favorite-livescores{
     margin: 0 0;
