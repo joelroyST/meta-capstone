@@ -31,25 +31,13 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
   };
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    console.log("Running useEffect to fetch user...");
     const token = localStorage.getItem("token");
-    console.log("Token:", token);
 
     if (!user) {
       const storedUser = localStorage.getItem("user");
-      console.log("Stored user from localStorage:", storedUser);
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       }
-=======
-  const token = localStorage.getItem("token");
-
-  if (!user) {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
->>>>>>> Stashed changes
     }
 
     if (!token) {
@@ -65,25 +53,17 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
           },
         });
 
-<<<<<<< Updated upstream
         const data = await res.json();
-        console.log("User data response:", data);
-=======
-      const data = await res.json();
->>>>>>> Stashed changes
 
         if (data.user) {
           setUser(data.user);
           localStorage.setItem("token", token);
           localStorage.setItem("userID", data.user.id);
 
-<<<<<<< Updated upstream
-          console.log("Fetching user leagues...");
           const leaguesResponse = await fetch(
             `http://localhost:5000/api/league/user/${data.user.id}`
           );
           const leaguesData = await leaguesResponse.json();
-          console.error("Leagues fetched:", leaguesData);
           setLeagues(leaguesData);
         } else {
           console.warn("No user returned – setting user to null");
@@ -91,16 +71,6 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
         }
       } catch (error) {
         console.error("Error in fetchUserData:", error);
-=======
-        const leaguesResponse = await fetch(
-          `http://localhost:5000/api/league/user/${data.user.id}`
-        );
-        const leaguesData = await leaguesResponse.json();
-        console.error("Leagues fetched:", leaguesData);
-        setLeagues(leaguesData);
-      } else {
-        console.warn("No user returned – setting user to null");
->>>>>>> Stashed changes
         setUser(null);
       }
     }

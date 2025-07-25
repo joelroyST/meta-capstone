@@ -73,7 +73,6 @@ const PlayerMarketplace = ({ user, setUser, handleLogout }) => {
   }, []);
 
   return (
-<<<<<<< Updated upstream
     <>
       {isLoading ? (
         <LoadingPage />
@@ -103,44 +102,6 @@ const PlayerMarketplace = ({ user, setUser, handleLogout }) => {
               <tr>
                 <td>ID: </td>
                 <td>Name: </td>
-=======
-    <div className="player-marketplace-page">
-      <TopBar
-        onHamburgClick={() => setOpenSidebar((prev) => !prev)}
-        onProfileClick={() => setOpenModal(true)}
-      />
-      {openModal && <AccountModal setOpenModal={setOpenModal} user={user} handleLogout={handleLogout} />}
-      {openSidebar && <SidebarModal setOpenSidebar={setOpenSidebar} />}
-      <h2 className="marketplace-title">Player Marketplace</h2>
-      <input
-        className="search-input"
-        placeholder="Search player by name..."
-        type="text"
-        onChange={searchPlayerByName}></input>
-      <button onClick={sortByID}>Sort by ID</button>
-      <table>
-        <thead>
-          <tr>
-            <td>ID: </td>
-            <td>Name: </td>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPlayers.map((player) => {
-            return (
-              <tr key={player.id}>
-                <td>{player.id}</td>
-                <td>
-                  <p>
-                    {player.metadata.firstname} {player.metadata.lastname}
-                  </p>
-                </td>
-                <td>
-                  <button onClick={() => handleAddPlayerClick(player)}>
-                    Add Player
-                  </button>
-                </td>
->>>>>>> Stashed changes
               </tr>
             </thead>
             <tbody>
