@@ -87,4 +87,32 @@ function computePlayerAverages(gamesWithStats) {
   return playerAverages;
 }
 
-export default {calculatePlayerValueKey: calculatePlayerValue, computePlayerAveragesKey: computePlayerAverages};
+function computePlayerAveragesFromGames(playerGames) {
+  if (!playerGames || playerGames.length === 0) {
+    return {
+      avgPoints: "0.00",
+      avgRebounds: "0.00",
+      avgAssists: "0.00",
+    };
+  }
+
+  const totals = playerGames.reduce(
+    (accumulator, game) => {
+      accumulator.points += game.points || 0;
+      accumulator.rebounds += game.totReb || 0;
+      accumulator.assists += game.assists || 0;
+      return accumulator;
+    },
+    { points: 0, rebounds: 0, assists: 0 }
+  );
+
+  const numGames = playerGames.length;
+
+  return {
+    avgPoints: (totals.points / numGames).toFixed(2),
+    avgRebounds: (totals.rebounds / numGames).toFixed(2),
+    avgAssists: (totals.assists / numGames).toFixed(2),
+  };
+}
+
+export default {calculatePlayerValueKey: calculatePlayerValue, computePlayerAveragesKey: computePlayerAverages, computePlayerAveragesFromGamesKey: computePlayerAveragesFromGames};

@@ -1,16 +1,16 @@
-import React, { isValidElement, useState } from "react";
+import React, { isValidElement, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./HomePage.css";
 import AccountModal from "../Components/AccountModal";
-import { useEffect } from "react";
 import SidebarModal from "../components/SideBarModal";
 import TopBar from "../components/TopBar";
 import LoadingPage from "../components/LoadingPage";
+import playerStatsHelper from "../../../backend/utils/playerstatshelper"; 
 
 function HomePage({ user, setUser, handleLogout }) {
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
@@ -59,6 +59,30 @@ function HomePage({ user, setUser, handleLogout }) {
     return () => clearTimeout(timer);
   }, []);
 
+  // Fetch random players with averages for display
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/randomRefPlayersWithAverages");
+        const data = await res.json();
+
+        const playersWithAverages = data.map(({ playerId, firstName, lastName, position, games }) => {
+          const averages = playerStatsHelper.computePlayerAveragesKey(
+            games.map((game) => ({ playerStats: game }))
+          );
+
+          return {playerId, firstName,lastName, position, averages};
+        });
+
+        setPlayers(playersWithAverages);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchPlayers();
+  }, []);
+
   return (
     <>
       {isLoading ? (
@@ -69,19 +93,26 @@ function HomePage({ user, setUser, handleLogout }) {
             onHamburgClick={() => setOpenSidebar((prev) => !prev)}
             onProfileClick={handleOpenModal}
           />
+
           <div className="middle-homepage">
+            {/* Player cards section */}
             <section className="recommended-section">
               <h3 className="recommended-teams-sports-title">
-                Recommended Sports/Team Cards
+                Featured Players
               </h3>
-              {/* TODO make each card able to redirect the user to the specified page */}
               <div className="recommended-cards-grid">
-                <div className="recommended-card">Team/Sport #1</div>
-                <div className="recommended-card">Team/Sport #2</div>
-                <div className="recommended-card">Team/Sport #3</div>
-                <div className="recommended-card">Team/Sport #4</div>
+                {players.map((player) => (
+                  <div key={player.playerId} className="recommended-card">
+                    <h4>{player.firstName} {player.lastName}</h4>
+                    <p>Position: {player.position}</p>
+                    <p>PTS: {player.averages.points}</p>
+                    <p>REB: {player.averages.totReb}</p>
+                    <p>AST: {player.averages.assists}</p>
+                  </div>
+                ))}
               </div>
             </section>
+
             <div className="trending-news">
               <div className="trending-news-card">
                 Popular/Trending Sports News
@@ -97,6 +128,7 @@ function HomePage({ user, setUser, handleLogout }) {
               </div>
             </div>
           </div>
+
           {openModal && (
             <AccountModal
               setOpenModal={setOpenModal}
