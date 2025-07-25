@@ -4,6 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const { createFantasyTeam } = require("../utils/fantasyteamhelper");
+const { getPlayersFromFantasyTeam, getFantasyTeamsByLeagueAndUserIds, getUsersFromLeagueId } = require("../utils/leaguehelper");
 
 // Checking if a league is created and then displaying user information
 router.get("/:leagueId", async (req, res) => {
@@ -101,17 +102,8 @@ router.get("/:leagueId/users", async (req, res) => {
       return res.status(400).json({ error: "Invalid leagueId" });
     }
 
-    const users = await prisma.user.findMany({
-      where: {
-        leagues: {
-          has: leagueIdNum,
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-      },
-    });
+    const users = await getUsersFromLeagueId(leagueIdNum);
+    
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -130,48 +122,15 @@ router.get("/:leagueId/users-with-players", async (req, res) => {
       return res.status(400).json({ error: "Invalid leagueId" });
     }
 
-    const userIds = await prisma.league.findFirst({
-      where: {
-        leagueId: leagueIdNum,
-      },
-      select: {
-        users: true,
-      },
-    });
+    const users = await getUsersFromLeagueId(leagueIdNum);
 
-    const users = await prisma.user.findMany({
-      where: {
-        id: {
-          in: userIds.users,
-        }
-      }
-    })
+    const userIds = users.map((user) => user.id);
 
-    const fantasyteams = await prisma.fantasyTeam.findMany({
-      where: {
-        leagueId: {
-          equals: leagueIdNum,
-        },
-        userId: {
-          in: userIds.users,
-        }
-      }
-    })
+    const fantasyTeams = await getFantasyTeamsByLeagueAndUserIds(leagueIdNum, userIds);
 
-    const refplayerspromise = fantasyteams.map(async (fantasyteam) => {
-      const refplayers = await prisma.refPlayer.findMany({
-        where: {
-          id: {
-            in: fantasyteam.playerIds,
-          },
-        },
-      });
-      return {fantasyteam, refplayers}
-    });
+    const result = await getPlayersFromFantasyTeam(fantasyTeams);
 
-    const result1 = await Promise.all(refplayerspromise)
-    return res.json({users, result1});
-
+    return res.json({users, result});
   } catch (error) {
     console.error(error);
     res.status(500).json({

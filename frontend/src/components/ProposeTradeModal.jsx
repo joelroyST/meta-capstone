@@ -37,7 +37,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
         );
         const users = await res.json();
         setLeagueUsers(users.users);
-        setFantasyTeams(users.result1);
+        setFantasyTeams(users.result);
       } catch (error) {
         console.error("Error fetching users with players:", error);
       }
@@ -178,8 +178,6 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
         const positionCounts = {};
         userPlayers.forEach((player) => {
           const position = player.metadata.leagues?.standard?.pos;
-          console.log(
-            `THIS IS THE NAME: ${player.metadata.firstname} POSITION: ${player.metadata.leagues?.standard?.pos}`);
           if (position && requiredPositions.includes(position)) {
             positionCounts[position] = (positionCounts[position] || 0) + 1;
           }
