@@ -1,6 +1,7 @@
 import React from "react";
 import DefaultProfilePic from "../assets/defaultpfp.svg";
 import "./TopBar.css";
+import Trivia from "./Trivia";
 
 const TopBar = ({ onHamburgClick, onProfileClick }) => {
   return (
@@ -10,9 +11,7 @@ const TopBar = ({ onHamburgClick, onProfileClick }) => {
           onClick={onHamburgClick}>
           ☰
         </div>
-        <section className="favorite-livescores">
-          <h2>Favorited Sports/Teams Live Scores</h2>
-        </section>
+       <Trivia />
         <img
           className="user-profile-icon"
           src={DefaultProfilePic}
