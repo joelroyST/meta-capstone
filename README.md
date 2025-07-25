@@ -2,7 +2,7 @@
 
 Project Plan: https://docs.google.com/document/d/1mfTpnwb_WUD4PA1SAq3CxDqwZPWAPhQp4DhyJE1A-6o/edit?usp=sharing
 
-This web app is your fantasy basketball manager for you and your friends. Create leagues, draft players, propose trades, and manage your team—all in one place without the clutter of big fantasy apps.
+Sports Pulse is your fantasy basketball manager for you and your friends! Create leagues, draft players, propose trades, and manage your team—all in one place without the clutter of big fantasy apps.
 
 After signing up and logging in, you can create or join leagues 🤝, draft your fantasy basketball team, and manage your roster throughout the season. Use the player marketplace 🛒 to browse players by name and position to strengthen your lineup.
 
