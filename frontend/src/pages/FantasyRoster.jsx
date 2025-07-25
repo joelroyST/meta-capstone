@@ -11,7 +11,7 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
   const [dataPlayers, setDataPlayers] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchRoster = async () => {
@@ -82,6 +82,13 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="fantasy-roster-page">
       <TopBar
@@ -91,7 +98,7 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
       <div className="roster-container">
         <h2 className="roster-title">Fantasy Team Roster</h2>
 
-        {loading ? (
+        {isLoading ? (
           <p>Loading Roster...</p>
         ) : players.length === 0 ? (
           <p>No players in your fantasy team roster yet</p>
