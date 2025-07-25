@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function fetchPlayerStatistics() {
-  const url = "https://api-nba-v1.p.rapidapi.com/players/statistics?team=1&season=2021";
+  const url = "https://api-nba-v1.p.rapidapi.com/players/statistics?team=32&season=2021";
   const options = {
     method: "GET",
     headers: {
@@ -16,6 +16,17 @@ async function fetchPlayerStatistics() {
     const data = await response.json();
     const statsLists = data.response;
     for (const stats of statsLists) {
+      const gameId = stats.game?.id ?? 0;
+      const playerId = stats.player?.id ?? 0;
+      if (!gameId || !playerId) {
+        continue;
+      }
+      const gameExists = await prisma.game.findUnique({
+        where: {gameId: gameId}
+      });
+      if (!gameExists) {
+        continue;
+      }
         await prisma.playerStatisticsPerGame.upsert({
             where: {playerId_gameId : {
                 playerId: stats.player?.id ?? 0,
@@ -73,7 +84,6 @@ async function fetchPlayerStatistics() {
             }
         })
     }
-
   } catch (error) {
     console.error(error);
   }

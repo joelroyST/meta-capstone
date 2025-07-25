@@ -11,7 +11,6 @@ const JoinLeague = ({ user }) => {
     }
 
     try {
-        console.log("BEFORE HTE POST");
       const res = await fetch(
         `http://localhost:5000/api/league/${leagueIdInput}/join`,
         {
@@ -20,7 +19,6 @@ const JoinLeague = ({ user }) => {
           body: JSON.stringify({ userId: user.id }),
         }
       );
-      console.log("AFTER THE POST")
       const data = await res.json();
       if (res.ok) {
         alert(`Successfully joined league: ${data.league.name}`);

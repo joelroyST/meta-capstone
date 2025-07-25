@@ -296,7 +296,6 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
       if (!response.ok) throw new Error("Failed to submit trade proposal");
 
       const result = await response.json();
-      console.log("Trade proposals submitted:", result);
       handleClose();
     } catch (error) {
       console.error(error);

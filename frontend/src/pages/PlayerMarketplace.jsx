@@ -110,9 +110,9 @@ const PlayerMarketplace = ({ user, setUser, handleLogout }) => {
                   <tr key={player.id}>
                     <td>{player.id}</td>
                     <td>
-                      <button onClick={() => console.log(player.metadata)}>
+                      <p>
                         {player.metadata.firstname} {player.metadata.lastname}
-                      </button>
+                      </p>
                     </td>
                     <td>
                       <button onClick={() => handleAddPlayerClick(player)}>

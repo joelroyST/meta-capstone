@@ -86,7 +86,6 @@ async function populatePlayerValuesForSeason() {
         data: { value: computedValue },
       });
     }
-
   } catch (error) {
     console.error("Error populating player values:", error);
   } finally {

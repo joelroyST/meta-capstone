@@ -48,4 +48,48 @@ router.post("/players", async (req, res) => {
   }
 });
 
+// Fetch random refPlayers with their games
+router.get("/randomRefPlayersWithAverages", async (req, res) => {
+  const numberPlayers = 15;
+  try {
+    const allRefPlayers = await prisma.refPlayer.findMany({
+      select: { id: true, metadata: true },
+    });
+
+    if (allRefPlayers.length === 0) return res.json([]);
+
+    const shuffled = allRefPlayers.sort(() => 0.5 - Math.random());
+    const selectedPlayers = shuffled.slice(0, numberPlayers);
+
+    const playerData = await Promise.all(
+      selectedPlayers.map(async (refPlayer) => {
+        const metadata = refPlayer.metadata;
+        const playerId = metadata.id;
+        const firstName = metadata.firstname || "N/A";
+        const lastName = metadata.lastname || "N/A";
+        const position = metadata.leagues?.standard?.pos || "N/A";
+        const teamId = metadata.teamId || null;
+
+        const games = await prisma.playerStatisticsPerGame.findMany({
+          where: { playerId: playerId },
+        });
+
+        let ppg = 0;
+        if (games.length > 0) {
+          const totalPoints = games.reduce((sum, game) => sum + (game.points || 0), 0);
+          ppg = totalPoints / games.length;
+        }
+
+        return {playerId, firstName, lastName, position, teamId, ppg: ppg.toFixed(2),games};
+      })
+    );
+
+    const sortedByPPG = playerData.sort((a, b) => parseFloat(b.ppg) - parseFloat(a.ppg));
+
+    return res.json(sortedByPPG);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to fetch random refPlayers with averages" });
+  }
+});
 module.exports = router;

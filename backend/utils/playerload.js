@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function fetchNBAPlayers() {
-  const url = "https://api-nba-v1.p.rapidapi.com/players?team=2&season=2021";
+  const url = "https://api-nba-v1.p.rapidapi.com/players?team=32&season=2021";
   const options = {
     method: "GET",
     headers: {
