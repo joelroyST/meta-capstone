@@ -6,6 +6,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
   const [leagueUsers, setLeagueUsers] = useState([]);
   const [fantasyTeams, setFantasyTeams] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [tradeWarnings, setTradeWarnings] = useState([]);
   const [tradeLegs, setTradeLegs] = useState([
     {
       user1: "",
@@ -107,6 +108,10 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
   // Makes sure that the same pair of users don't trade with each other twice and they also have to trade at least one player
   // It also makes sure they choose two participants
   const validateTradeLegs = () => {
+    setValidationError("");
+    setTradeWarnings([]);
+    const newWarnings = [];
+
     // Check for duplicate participant pairs ignoring order
     const userPairs = tradeLegs
       .map(({ user1, user2 }) =>
@@ -124,12 +129,12 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
       }
       pairsSet.add(pair);
     }
+    const warnedLegs = new Set();
 
-    // Check each leg for participant and player selection
-    for (let i = 0; i < tradeLegs.length; i++) {
-      const leg = tradeLegs[i];
+    for (let index = 0; index < tradeLegs.length; index++) {
+      const leg = tradeLegs[index];
       if (!leg.user1 || !leg.user2) {
-        setValidationError(`Select two users in trade leg ${i + 1}`);
+        setValidationError(`Please select two users in trade leg ${index + 1}.`);
         return false;
       }
       if (
@@ -138,14 +143,121 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
         leg.user1 === leg.user2
       ) {
         setValidationError(
-          `Make sure to choose at least one unique player for each trade user in trade leg ${
-            i + 1
-          }`
-        );
+          `Make sure to choose at least one unique player for each trade user in trade leg ${i + 1}`);
         return false;
       }
+
+      const requiredPositions = ["C", "PF", "SF", "SG", "PG", "F", "G", "F-C", "G-C", "F-G"];
+      const valueDifference = 10;
+
+      for (const [userKey, oppKey, giveKey, receiveKey] of [
+        ["user1", "user2", "user1PlayersToGive", "user2PlayersToGive"],
+        ["user2", "user1", "user2PlayersToGive", "user1PlayersToGive"],
+      ]) {
+        const userId = parseInt(leg[userKey]);
+        const oppId = parseInt(leg[oppKey]);
+        if (!userId || !oppId) continue;
+
+        const userTeam = fantasyTeams.find(
+          (fantasyteam) => fantasyteam.fantasyteam.userId === userId
+        );
+        const oppTeam = fantasyTeams.find(
+          (fantasyteam) => fantasyteam.fantasyteam.userId === oppId
+        );
+        if (!userTeam || !oppTeam) continue;
+
+        const userName =
+          leagueUsers.find((user) => user.id === userId)?.name || "User";
+        const givingIds = leg[giveKey];
+        const receivingIds = leg[receiveKey];
+
+        const userPlayers = userTeam.refplayers;
+        const oppPlayers = oppTeam.refplayers;
+
+        // Initialize position counts for user's current players
+        const positionCounts = {};
+        userPlayers.forEach((player) => {
+          const position = player.metadata.leagues?.standard?.pos;
+          console.log(
+            `THIS IS THE NAME: ${player.metadata.firstname} POSITION: ${player.metadata.leagues?.standard?.pos}`);
+          if (position && requiredPositions.includes(position)) {
+            positionCounts[position] = (positionCounts[position] || 0) + 1;
+          }
+        });
+
+        // Filter players that the user is giving away in the trade
+        const givingPlayers = userPlayers.filter((player) =>
+          givingIds.includes(player.id)
+        );
+        givingPlayers.forEach((player) => {
+          const position = player.metadata.leagues?.standard?.pos;
+          if (position && requiredPositions.includes(position)) {
+            positionCounts[position] -= 1;
+          }
+        });
+
+        // Filter opponent's players that the user is receiving in the trade
+        const receivingPlayers = oppPlayers.filter((player) =>
+          receivingIds.includes(player.id)
+        );
+        const receivedPositions = new Set(
+          receivingPlayers
+            .map((player) => player.metadata.leagues?.standard?.pos)
+            .filter((position) => position && requiredPositions.includes(position))
+        );
+
+        // For each required position, check if the user will have zero players left after the trade
+        requiredPositions.forEach((position) => {
+          if (positionCounts[position] === 0 && !receivedPositions.has(position)) {
+            const playersGivingAway = givingPlayers
+              .filter(
+                (player) =>
+                  player.metadata.leagues?.standard?.pos === position &&
+                  requiredPositions.includes(position)).map((player) => `${player.metadata.firstname} ${player.metadata.lastname} (${position})`).join(", ");
+
+            if (playersGivingAway) {
+              newWarnings.push(
+                `${userName} wouldn't have a ${position} left after the Trade Leg ${index + 1} because they are trading away ${playersGivingAway} and are not receiving a player in that position back`);
+            }
+          }
+        });
+
+        // Warning for the value difference
+        const givingValue = givingPlayers.reduce(
+          (sum, player) => sum + (player.value || 0), 0);
+        const receivingValue = receivingPlayers.reduce(
+          (sum, player) => sum + (player.value || 0), 0);
+
+        if (!warnedLegs.has(index)) {
+          if (Math.abs(givingValue - receivingValue) > valueDifference) {
+            const givingDetails =
+              givingPlayers
+                .map(
+                  (player) =>
+                    `${player.metadata.firstname} ${player.metadata.lastname} (Value: ${
+                      player.value || 0
+                    })`
+                ).join(", ") || "no players";
+
+            const receivingDetails =
+              receivingPlayers
+                .map(
+                  (player) =>
+                    `${player.metadata.firstname} ${player.metadata.lastname} (Value: ${
+                      player.value || 0
+                    })`
+                ).join(", ") || "no players";
+
+            newWarnings.push(
+              `In Trade Leg ${index + 1}, there is a significant value difference: trading ${givingDetails} (Total: ${givingValue}) for ${receivingDetails} (Total: ${receivingValue}). Consider balancing this trade for fairness.`);
+          }
+          warnedLegs.add(index);
+        }
+      }
     }
-    setValidationError("");
+
+    setTradeWarnings(newWarnings);
+
     return true;
   };
 
@@ -162,34 +274,35 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
     if (questionIndex > 0) {
       setQuestionindex((prev) => prev - 1);
     }
+    setTradeWarnings("");
   };
 
   const handleSubmit = async () => {
-  if (!validateTradeLegs()) return;
+    if (!validateTradeLegs()) return;
 
-  try {
-    const payload = {
-      leagueId,
-      proposerId: user.id, 
-      tradeLegs,
-    };
+    try {
+      const payload = {
+        leagueId,
+        proposerId: user.id,
+        tradeLegs,
+      };
 
-    const response = await fetch("http://localhost:5000/api/trade", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+      const response = await fetch("http://localhost:5000/api/trade", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (!response.ok) throw new Error("Failed to submit trade proposal");
+      if (!response.ok) throw new Error("Failed to submit trade proposal");
 
-    const result = await response.json();
-    console.log("Trade proposals submitted:", result);
-    handleClose();
-  } catch (error) {
-    console.error(error);
-    setValidationError("Failed to submit trade proposal. Please try again.");
-  }
-};
+      const result = await response.json();
+      console.log("Trade proposals submitted:", result);
+      handleClose();
+    } catch (error) {
+      console.error(error);
+      setValidationError("Failed to submit trade proposal. Please try again.");
+    }
+  };
 
   // This adds a new empty trade leg
   const addTradeLeg = () => {
@@ -229,6 +342,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
       },
     ]);
     setValidationError("");
+    setTradeWarnings("");
   };
 
   const handleClose = () => {
@@ -353,14 +467,17 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
                                 player.id
                               )}
                               onChange={() => {
-                                const selected = [
-                                  ...leg.user1PlayersToGive,
-                                  player.id,
-                                ];
+                                const alreadySelected =
+                                  leg.user1PlayersToGive.includes(player.id);
+                                const updated = alreadySelected
+                                  ? leg.user1PlayersToGive.filter(
+                                      (id) => id !== player.id
+                                    )
+                                  : [...leg.user1PlayersToGive, player.id];
                                 updateTradeLeg(
                                   legIndex,
                                   "user1PlayersToGive",
-                                  selected
+                                  updated
                                 );
                               }}
                             />
@@ -382,14 +499,17 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
                                 player.id
                               )}
                               onChange={() => {
-                                const selected = [
-                                  ...leg.user2PlayersToGive,
-                                  player.id,
-                                ];
+                                const alreadySelected =
+                                  leg.user2PlayersToGive.includes(player.id);
+                                const updated = alreadySelected
+                                  ? leg.user2PlayersToGive.filter(
+                                      (id) => id !== player.id
+                                    )
+                                  : [...leg.user2PlayersToGive, player.id];
                                 updateTradeLeg(
                                   legIndex,
                                   "user2PlayersToGive",
-                                  selected
+                                  updated
                                 );
                               }}
                             />
@@ -418,7 +538,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
         {/* PAGE 3: CONFIRMATION */}
         {questionIndex === 2 && (
           <div>
-            <button>No, Cancel</button>
+            <button onClick={handleClose}>No, Cancel</button>
           </div>
         )}
 
@@ -429,6 +549,13 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
           <button onClick={nextQuestion}>→</button>
         ) : (
           <button onClick={handleSubmit}>Submit</button>
+        )}
+        {tradeWarnings.length > 0 && (
+          <div style={{ color: "orange", marginTop: "8px" }}>
+            {tradeWarnings.map((warning, index) => (
+              <p key={index}>{warning}</p>
+            ))}
+          </div>
         )}
       </div>
     </div>
