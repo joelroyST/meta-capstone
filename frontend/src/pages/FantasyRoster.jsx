@@ -117,7 +117,7 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
                     }>
                     {playerId ? (
                       <div>
-                        <p>{`Player Name: ${
+                        <p>{`Name: ${
                           dataPlayers.find((player) => player.id === playerId)
                             ? dataPlayers.find(
                                 (player) => player.id === playerId

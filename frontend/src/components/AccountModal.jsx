@@ -34,7 +34,6 @@ const AccountModal = ({ setOpenModal, user, handleLogout }) => {
         <div className="modal-body">
           {!user && <button onClick={handleLogin}>Login</button>}
           {user && <button onClick={handleAccountLogout}>Logout</button>}
-          <button>Settings</button>
         </div>
         <div className="profile-section">
           <img src={DefaultProfilePic}></img>
