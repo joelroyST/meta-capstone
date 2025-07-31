@@ -1,135 +1,175 @@
 body {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 .website-title {
-    font-size: 60px;
-    top: 0;
-    margin: 0;
-    font-weight: 400;
-    text-align: center;
-    margin: 20px 0 10px;
-    color: rgb(44, 62, 80);
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    letter-spacing: 2px;
+  font-size: 60px;
+  margin: 20px 0 10px;
+  font-weight: 400;
+  text-align: center;
+  color: rgb(44, 62, 80);
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  letter-spacing: 2px;
 }
 
 .homepage {
-    width: 100%;
-    height: 100%;
-    background: rgb(247, 249, 252);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-left: auto;
-    padding-right: auto;
+  width: 100%;
+  min-height: 100vh;
+  background: rgb(247, 249, 252);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .middle-homepage {
-    padding: 20px;
-    width: 100%;
-    max-width: 1200px;
-    border: 1px solid black;
-    border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  border: 1px solid black;
+  border-radius: 10px;
+  background: #f7f9fc;
+}
+
+.homepage-content {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 20px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.sidebar {
+  background: white;
+  border: 2px solid black;
+  border-radius: 12px;
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.sidebar-news-card {
+  margin-bottom: 15px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.sidebar-news-card h4 {
+  margin: 0 0 5px 0;
+  font-size: 15px;
+  color: rgb(44, 62, 80);
+}
+
+.news-source {
+  font-style: italic;
+  font-size: 12px;
+  color: darkgrey;
 }
 
 .user-profile-icon {
-    width: 50px;
-    height: 50px;
-    margin: 0 15px;
-    cursor: pointer;
+  width: 50px;
+  height: 50px;
+  margin: 0 15px;
+  cursor: pointer;
 }
 
 .hamburg {
-    font-size: 50px;
-    margin: 0 15px;
+  font-size: 50px;
+  margin: 0 15px;
 }
 
-.favorite-livescores{
-    margin: 0 0;
-    padding: 40px;
-    border: 2px solid black;
-    border-radius: 10px;
-    width: 80%;
-    text-align: center;
+.favorite-livescores {
+  margin: 0;
+  padding: 40px;
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 80%;
+  text-align: center;
+}
+
+.recommended-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .recommended-teams-sports-title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 25px;
 }
 
 .recommended-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    width: 100%;
-}
-
-.recommended-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-@media only screen and (max-width: 768px) {
-    .recommended-cards-grid {
-        grid-template-columns: repeat(1, 1fr);
-    }
-    .recommended-card {
-        max-width: 100%;
-    }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  width: 100%;
 }
 
 .recommended-card {
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .recommended-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .recommended-card h4 {
-    margin: 10px 0 5px 0;
-    font-size: 20px;
+  margin: 10px 0 5px 0;
+  font-size: 20px;
 }
 
 .recommended-card .stat-line {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 8px;
-    font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 8px;
+  font-size: 16px;
 }
 
 .trending-news {
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 40px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 40px;
 }
 
 .trending-news-card {
-    background: white;
-    border: 2px solid black;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 12px;
-    margin-bottom: 15px;
+  background: white;
+  border: 2px solid black;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
 }
 
-.recommended-section {
+.trending-news-card:hover {
+  transform: translateY(-5px);
+}
+
+@media only screen and (max-width: 900px) {
+  .homepage-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
+  }
+
+  .sidebar {
+    max-height: none;
+    margin-bottom: 20px;
+  }
 }
