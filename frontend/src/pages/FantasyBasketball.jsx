@@ -147,9 +147,9 @@ const FantasyBasketball = ({ user, setUser, handleLogout }) => {
           <h1 className="fantasy-main-title">Welcome to Fantasy Basketball!</h1>
           <h4 className="fantasy-basketball-instructions">
             On this page, you will be able to add, drop, or trade players onto
-            your fantasy team with your friends! You will have a certain amount
-            of tokens that you can spend per season so make sure you spend them
-            wisely and make the best team possible!
+            your fantasy team with your friends! Did you want to have a fantasy league with your friends?
+            No problem! Create a league and ask your friends to type in the League ID to join!
+            *MAKE SURE TO LOG IN TO PARTICIPATE IN FANTASY BASKETBALL*
           </h4>
           <div className="action-buttons">
             <button

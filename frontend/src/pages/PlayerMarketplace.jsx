@@ -102,16 +102,22 @@ const PlayerMarketplace = ({ user, setUser, handleLogout }) => {
               <tr>
                 <td>ID: </td>
                 <td>Name: </td>
+                <td>Position: </td>
               </tr>
             </thead>
             <tbody>
-              {filteredPlayers.map((player) => {
+              {filteredPlayers.slice(0, 30).map((player) => {
                 return (
                   <tr key={player.id}>
                     <td>{player.id}</td>
                     <td>
                       <p>
                         {player.metadata.firstname} {player.metadata.lastname}
+                      </p>
+                    </td>
+                    <td>
+                      <p>
+                        {player.metadata.leagues?.standard?.pos}
                       </p>
                     </td>
                     <td>

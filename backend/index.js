@@ -38,6 +38,8 @@ const tradepageRouter = require("./routes/tradepage");
 server.use("/api", tradepageRouter);
 const subscriptionRouter = require("./routes/subscription");
 server.use("/api", subscriptionRouter);
+const newsRouter = require("./routes/news");
+server.use("/api", newsRouter);
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

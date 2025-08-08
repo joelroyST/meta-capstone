@@ -50,7 +50,7 @@ router.post("/players", async (req, res) => {
 
 // Fetch random refPlayers with their games
 router.get("/randomRefPlayersWithAverages", async (req, res) => {
-  const numberPlayers = 15;
+  const numberPlayers = 10;
   try {
     const allRefPlayers = await prisma.refPlayer.findMany({
       select: { id: true, metadata: true },

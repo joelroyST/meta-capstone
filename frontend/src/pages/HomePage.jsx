@@ -12,6 +12,7 @@ function HomePage({ user, setUser, handleLogout }) {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [players, setPlayers] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
+  const [newsArticles, setNewsArticles] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
@@ -44,22 +45,7 @@ function HomePage({ user, setUser, handleLogout }) {
     fetchUserData();
   }, []);
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Fetch random players with averages for display
+    // Fetch random players with averages for display
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
@@ -83,6 +69,34 @@ function HomePage({ user, setUser, handleLogout }) {
     fetchPlayers();
   }, []);
 
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/news");
+        const data = await res.json();
+        setNewsArticles(data)
+      } catch (error) {
+        console.error("Failed to fetch news articles from frontend: ", error)
+      }
+    }
+    fetchNews();
+  }, [])
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       {isLoading ? (
@@ -97,7 +111,20 @@ function HomePage({ user, setUser, handleLogout }) {
           
 
           <div className="middle-homepage">
-            {/* Player cards section */}
+            <div className="homepage-content">
+              <aside className="sidebar left-sidebar">
+                <h3 className="sidebar-title">Latest News</h3>
+                {newsArticles.slice(0, Math.ceil(newsArticles.length / 2)).map((article, index) => (
+                  <div key={index} className="sidebar-news-card">
+                    <a href={article.url} target="_blank" rel="noopener norefferer">
+                      <h4>{article.title}</h4>
+                    </a>
+                    <p className="news-source">Source: {article.source}</p>
+                  </div>
+                ))}
+              </aside>
+
+                {/* Player cards section */}
             <section className="recommended-section">
               <h3 className="recommended-teams-sports-title">
                 Featured Players
@@ -114,6 +141,19 @@ function HomePage({ user, setUser, handleLogout }) {
                 ))}
               </div>
             </section>
+
+            <aside className="sidebar right-sidebar">
+                <h3 className="sidebar-title">Latest News</h3>
+                {newsArticles.slice(Math.ceil(newsArticles.length / 2)).map((article, index) => (
+                  <div key={index} className="sidebar-news-card">
+                    <a href={article.url} target="_blank" rel="noopener norefferer">
+                      <h4>{article.title}</h4>
+                    </a>
+                    <p className="news-source">Source: {article.source}</p>
+                  </div>
+                ))}
+            </aside>
+            </div>
           </div>
 
           {openModal && (
