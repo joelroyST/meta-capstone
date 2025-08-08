@@ -129,7 +129,7 @@ router.get("/:leagueId/users-with-players", async (req, res) => {
     const fantasyTeams = await getFantasyTeamsByLeagueAndUserIds(leagueIdNum, userIds);
 
     const result = await getPlayersFromFantasyTeam(fantasyTeams);
-
+    
     return res.json({users, result});
   } catch (error) {
     console.error(error);
@@ -140,8 +140,8 @@ router.get("/:leagueId/users-with-players", async (req, res) => {
 });
 
 // Allow user to join an existing league
-router.post("/:leagueId/join", async (req, res) => {
-  const {leagueId} = req.params;
+router.post("/:leagueIdInput/join", async (req, res) => {
+  const {leagueIdInput} = req.params;
   const {userId} = req.body;
 
   if(!userId) {
@@ -149,7 +149,7 @@ router.post("/:leagueId/join", async (req, res) => {
   }
 
   try {
-    const leagueIdNum = parseInt(leagueId, 10);
+    const leagueIdNum = parseInt(leagueIdInput, 10);
 
     const updatedLeague = await prisma.league.update({
       where: {leagueId: leagueIdNum},

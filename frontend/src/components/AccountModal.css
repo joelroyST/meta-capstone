@@ -1,9 +1,11 @@
-.modal-overlay {
+.account-modal-overlay {
     position: fixed;
     top: 0;
     right: 0;
-    margin-right: 12px;
-    width: 40vw;
+    margin-right: 80px;
+    margin-top: 140px;
+    width: 400px;
+    min-width: 40vw;
     height: 40vh;
     display: flex;
     align-items: center;
@@ -11,7 +13,7 @@
     z-index: 1000;
 }
 
-.modal-content {
+.account-modal-content {
     padding: 20px 20px;
     border-radius: 15px;
     width: 300px;
@@ -35,13 +37,13 @@
     color: black;
 }
 
-.modal-body {
+.account-modal-body {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.modal-body button {
+.account-modal-body button {
     height: 30px;
     border-radius: 20px;
     cursor: pointer;

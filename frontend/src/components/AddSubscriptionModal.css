@@ -1,4 +1,4 @@
-.modal-overlay {
+.add-player-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -13,7 +13,7 @@
     z-index: 1000;
 }
 
-.modal-content {
+.add-player-modal-content {
     background: rgb(255, 255, 255);
     padding: 32px;
     border-radius: 12px;
@@ -25,6 +25,7 @@
     flex-direction: column;
     gap: 12px;
     overflow-y: auto;
+    text-align: center;
 }
 
 .modal-content h2 {

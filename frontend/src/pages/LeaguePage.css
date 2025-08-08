@@ -1,6 +1,8 @@
 .league-page {
-    background: linear-gradient(rgb(176, 102, 176) 30%, rgb(255, 255, 255) 100%);
+    background: linear-gradient(rgb(15, 15, 15) 20%, rgb(0, 0, 0) 100%);
     height: 100vh;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .league-top-container {
@@ -9,11 +11,12 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    height: 300px;
+    height: 320px;
     padding: 0;
     margin: 0;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
+    background-color: #161b22;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 .back-btn {
@@ -23,15 +26,15 @@
     font-size: 30px;
     background-color: transparent;
     border: none;
+    color: #f0f6fc;
     cursor: pointer;
 }
 
 .league-title {
     font-size: 28px;
     font-weight: 700;
-    color: black;
+    color: #f0f6fc;
     letter-spacing: 1px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 10px 0;
 }
 
@@ -44,15 +47,13 @@
     font-size: 20px;
     font-weight: 600;
     margin: 10px 0 5px 0;
-    color: black;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f0f6fc;
 }
 
 .league-description p {
     font-size: 16px;
     margin: 3px 0;
-    color: rgb(51, 51, 51);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #8b949e;
 }
 
 .league-members {
@@ -60,9 +61,11 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
+    background-color: #0d1117;
     border-radius: 15px;
-    padding: 10px;
-    gap: 10px;
+    padding: 20px;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 .members-list {
@@ -71,10 +74,11 @@
     justify-content: center;
     max-height: 400px;
     overflow-y: auto;
-    margin: 20px;
+    margin: 30px;
     gap: 10px;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.7);
+    background-color: #0d1117;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 .member-card {
@@ -87,12 +91,14 @@
     justify-content: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    background-color: #21262d;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
 }
 
 .member-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background-color: #30363d;
 }
 
 .member-card h4,
@@ -101,22 +107,26 @@
     font-weight: 600;
     margin: 0;
     text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f0f6fc;
 }
 
 .trade-proposal-button {
     width: 150px;
     height: 50px;
-    background-color: transparent;
-    color: black;
+    background-color: #238636;
+    color: white;
     border: none;
     border-radius: 10px;
     letter-spacing: 1.5px;
     font-size: 16px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    margin-top: 12px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .trade-proposal-button:hover {
-    cursor: url("../assets/cursor.cur"), auto;
+    background-color: #2ea043;
+    transform: scale(1.05);
+    cursor: pointer;
 }

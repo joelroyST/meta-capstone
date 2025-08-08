@@ -21,17 +21,17 @@ const AccountModal = ({ setOpenModal, user, handleLogout }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={() => setOpenModal(false)}>
+    <div className="account-modal-overlay" onClick={() => setOpenModal(false)}>
       <div
-        className="modal-content"
+        className="account-modal-content"
         onClick={(event) => event.stopPropagation()}>
         <div className="modal-header">
-          <h2>Profile Settings</h2>
+          <h2>Profile</h2>
           <button className="close-button" onClick={() => setOpenModal(false)}>
             Close
           </button>
         </div>
-        <div className="modal-body">
+        <div className="account-modal-body">
           {!user && <button onClick={handleLogin}>Login</button>}
           {user && <button onClick={handleAccountLogout}>Logout</button>}
         </div>

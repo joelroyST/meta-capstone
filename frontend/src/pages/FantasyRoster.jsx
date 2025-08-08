@@ -27,9 +27,7 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
         setPlayers(data.players || []);
       } catch (error) {
         console.error("Error fetching roster in Fantasy Roster: ", error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
     fetchRoster();
   }, [userId, leagueId]);
@@ -116,19 +114,18 @@ const FantasyRoster = ({ user, setUser, handleLogout }) => {
                       playerId ? "player-card filled" : "player-card empty"
                     }>
                     {playerId ? (
-                      <div>
-                        <p>{`Name: ${
+                      <div className="player-card-content">
+                        <p>{`${
                           dataPlayers.find((player) => player.id === playerId)
                             ? dataPlayers.find(
-                                (player) => player.id === playerId
-                              ).metadata.firstname +
-                              " " +
-                              dataPlayers.find(
-                                (player) => player.id === playerId
-                              ).metadata.lastname
-                            : "Unknown"
-                        }`}</p>
+                                (player) => player.id === playerId).metadata.firstname + " " + dataPlayers.find((player) => player.id === playerId).metadata.lastname : "Unknown"}`}</p>
                         <p>{`Player ID: ${playerId}`}</p>
+                        <p>
+                          {`Position: ${
+                            dataPlayers.find((player) => player.id === playerId)
+                            ? dataPlayers.find((player) => player.id === playerId).metadata.leagues?.standard?.pos : "Unknown"
+                          }`}
+                        </p>
                         <button
                           onClick={() => handleRemovePlayer(playerId)}
                           className="remove-player-button">

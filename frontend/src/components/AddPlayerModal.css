@@ -1,4 +1,4 @@
-.modal-overlay {
+.marketplace-modal-overlay {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,15 +10,22 @@
     background: rgba(0,0,0,0.4);
 }
 
-.modal-content {
+.marketplace-modal-content {
     background: white;
     border-radius: 8px;
     padding: 20px;
     width: 50%;
     min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
 
-.modal-content button {
+.marketplace-modal-content button {
     margin-top: 10px;
     margin-right: 5px;
+    width: 200px;
+    height: 30px;
+    align-self: center;
 }

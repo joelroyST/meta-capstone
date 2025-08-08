@@ -11,4 +11,6 @@
 
 .user-profile-icon {
     cursor: pointer;
+    background-color: white;
+    border-radius: 25px;
 }

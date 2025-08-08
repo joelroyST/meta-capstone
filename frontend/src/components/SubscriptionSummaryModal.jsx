@@ -68,8 +68,8 @@ const SubscriptionSummaryModal = ({ summary, onClose }) => {
   const playerValue = playerStatsHelper.calculatePlayerValueKey(validGames);
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="subscription-modal-overlay" onClick={onClose}>
+      <div className="subscription-modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>Subscription Summary</h2>
         {validGames.length === 0 ? (
           <p>No games with player data during this subscription period.</p>
@@ -135,7 +135,7 @@ const SubscriptionSummaryModal = ({ summary, onClose }) => {
 
         {validGames.length > 0 && (
           <p style={{ marginTop: "16px", fontWeight: "bold" }}>
-            Player Value During This Window: {playerValue}
+            Player Value During This Window: {playerValue.toFixed(2)}
           </p>
         )}
 

@@ -51,8 +51,8 @@ const AddPlayerModal = ({ player, user, onClose }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="marketplace-modal-overlay">
+      <div className="marketplace-modal-content">
         <h3>
           Add {player.metadata.firstname} {player.metadata.lastname} to League
         </h3>

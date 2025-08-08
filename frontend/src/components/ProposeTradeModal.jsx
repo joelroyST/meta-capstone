@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ProposeTradeModal.css";
 
 const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
-  const [questionIndex, setQuestionindex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [leagueUsers, setLeagueUsers] = useState([]);
   const [fantasyTeams, setFantasyTeams] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -264,13 +264,13 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
       if (!validateTradeLegs()) return;
     }
     if (questionIndex < questions.length - 1) {
-      setQuestionindex((prev) => prev + 1);
+      setQuestionIndex((prev) => prev + 1);
     }
   };
 
   const prevQuestion = () => {
     if (questionIndex > 0) {
-      setQuestionindex((prev) => prev - 1);
+      setQuestionIndex((prev) => prev - 1);
     }
     setTradeWarnings("");
   };
@@ -326,7 +326,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
   };
 
   const clearAll = () => {
-    setQuestionindex(0);
+    setQuestionIndex(0);
     setSelectedUsers([]);
     setTradeLegs([
       {
@@ -358,7 +358,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
           Close
         </button>
 
-        <h2>{questions[questionIndex].label}</h2>
+        <h2 className="trade-h2">{questions[questionIndex].label}</h2>
 
         {/* PAGE 1: SELECT THE USERS FOR TRADING*/}
         {questionIndex === 0 && (
@@ -401,7 +401,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
                   key={legIndex}
                   className="trade-leg"
                   id={`trade-leg-${legIndex}`}>
-                  <h3>
+                  <h3 className="trade-leg-h3">
                     Trade Leg {legIndex + 1}
                     {legIndex > 0 && (
                       <button
@@ -413,7 +413,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
                     )}
                   </h3>
 
-                  <label>Choose Trade Participant 1:</label>
+                  <label className="trade-label">Choose Trade Participant 1:</label>
                   <select
                     value={leg.user1}
                     onChange={(event) =>
@@ -432,7 +432,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
                     ))}
                   </select>
 
-                  <label>Choose Trade Participant 2:</label>
+                  <label className="trade-label">Choose Trade Participant 2:</label>
                   <select
                     value={leg.user2}
                     onChange={(event) =>
@@ -455,9 +455,9 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
                     {/* Participant 1 players */}
                     {filteredUser1Players.length > 0 && (
                       <div className="player-list-column">
-                        <h4>Participant 1 Players</h4>
+                        <h4 className="trade-h4">Participant 1 Players</h4>
                         {filteredUser1Players.map((player) => (
-                          <label key={player.id}>
+                          <label className="trade-players-label" key={player.id}>
                             <input
                               type="checkbox"
                               checked={leg.user1PlayersToGive.includes(
@@ -487,9 +487,9 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
                     {/* Participant 2 players */}
                     {filteredUser2Players.length > 0 && (
                       <div className="player-list-column">
-                        <h4>Participant 2 Players</h4>
+                        <h4 className="trade-h4">Participant 2 Players</h4>
                         {filteredUser2Players.map((player) => (
-                          <label key={player.id}>
+                          <label className="trade-players-label" key={player.id}>
                             <input
                               type="checkbox"
                               checked={leg.user2PlayersToGive.includes(
@@ -520,7 +520,7 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
               );
             })}
             {/* Add trade button */}
-            <button onClick={addTradeLeg} style={{ marginTop: "16px" }}>
+            <button className="trade-add-leg-button" onClick={addTradeLeg} style={{ marginTop: "16px" }}>
               Add Another Leg To Trade
             </button>
             {/* Trade validation error message for user */}
@@ -535,18 +535,21 @@ const ProposeTradeModal = ({ user, open, onClose, leagueId }) => {
         {/* PAGE 3: CONFIRMATION */}
         {questionIndex === 2 && (
           <div>
-            <button onClick={handleClose}>No, Cancel</button>
+            <button className="trade-buttons" onClick={handleClose}>No, Cancel</button>
           </div>
         )}
 
-        <button onClick={prevQuestion} disabled={questionIndex === 0}>
-          ←
-        </button>
-        {questionIndex < questions.length - 1 ? (
-          <button onClick={nextQuestion}>→</button>
-        ) : (
-          <button onClick={handleSubmit}>Submit</button>
-        )}
+        <div className="trade-buttons-propose">
+          <button className="navigate-button" onClick={prevQuestion} disabled={questionIndex === 0}>
+            ←
+          </button>
+          {questionIndex < questions.length - 1 ? (
+            <button className="navigate-button" onClick={nextQuestion}>→</button>
+          ) : (
+            <button onClick={handleSubmit}>Submit</button>
+          )}
+        </div>
+        
         {tradeWarnings.length > 0 && (
           <div style={{ color: "orange", marginTop: "8px" }}>
             {tradeWarnings.map((warning, index) => (

@@ -12,10 +12,13 @@ const TopBar = ({ onHamburgClick, onProfileClick }) => {
           ☰
         </div>
        <Trivia />
+       <div className="profile-help">
         <img
           className="user-profile-icon"
           src={DefaultProfilePic}
           onClick={onProfileClick}></img>
+       </div>
+        
       </div>
   );
 };

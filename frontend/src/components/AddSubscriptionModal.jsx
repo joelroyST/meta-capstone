@@ -85,8 +85,8 @@ const AddSubscriptionModal = ({user, setOpenAddSubscriptionModal}) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={() => setOpenAddSubscriptionModal(false)}>
-      <div className="modal-content" onClick={(event) => event.stopPropagation()}>
+    <div className="add-player-modal-overlay" onClick={() => setOpenAddSubscriptionModal(false)}>
+      <div className="add-player-modal-content" onClick={(event) => event.stopPropagation()}>
         <h2>Create a New Player Subscription!</h2>
         <p style={{color: "gray", textAlign: "center"}}>All subscriptions must be within the 2021 NBA season (October 19, 2021 - April 10, 2022)</p>
         <label>What player would you like to subscribe to?</label>

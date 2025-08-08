@@ -3,9 +3,12 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 20px;
-    background: linear-gradient(rgb(238, 236, 236) 20%, rgb(0, 0, 0) 100%);
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(rgb(0, 0, 0) 20%, rgb(0, 0, 0) 100%);
     min-height: 100vh;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .roster-container {
@@ -13,12 +16,12 @@
     flex-direction: column;
     align-items: center;
     padding: 20px 0px;
-    width: 92vw;
+    width: 80vw;
     max-width: 950px;
-    background-color: #f9f9f9;
+    margin-top: 60px;
+    background-color: #161b22;
     border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.12);
-    height: 400px;
+    box-shadow: 0px 0px 8px 8px rgba(129, 218, 157, 1.5);
 }
 
 .roster-title {
@@ -26,85 +29,88 @@
     font-weight: bold;
     margin-bottom: 20px;
     text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-bottom: 1px solid #2c2f35;
+    padding-bottom: 10px;
+    width: 90%;
+    color: #f0f6fc;
 }
 
 .players-grid {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    width: 90%;
-    padding: 15px;
-}
-
-.player-card {
-    width: 130px;
-    height: 150px;
-    background-color: #3f4da1;
-    border: 2px solid #c5cae9;
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    padding: 10px;
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 90%;
+    padding: 15px 0px;
 }
 
-.player-card:hover {
-    transform: translateY(-4px);
-    background-color: rgb(40, 40, 105) !important;
+.player-card-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-wrap: wrap;
+    overflow-y: auto;
 }
 
 .player-card.filled {
-    width: 130px;
-    height: 150px;
-    border: 2px solid #c5cae9;
+    width: 90%;
+    background-color: #0d1117;
+    border-bottom: 1px solid #2c2f35;
+    padding: 12px;
+    border-radius: 0px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    padding: 10px;
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: black;
     color: white;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.player-card.filled:hover {
+    background-color: #1c2128 !important;
+}
+
+.player-card.filled p {
+    margin: 0;
+    flex: 1;
+    text-align: left;
+    font-weight: 500;
+    font-size: 16px;
+    width: 200px;
+}
+
+.player-card.filled p:nth-child(2),
+.player-card.filled p:nth-child(3) {
+    font-weight: 400;
+    font-size: 14px;
+    color: #8b949e;
 }
 
 .player-card.empty {
-    width: 130px;
-    height: 150px;
-    background-color: #363e70;
-    border: 2px dashed #c5cae9;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    padding: 10px;
+    width: 100%;
+    height: auto;
+    background-color: #2f363d;
+    border: 2px dashed #30363d;
+    border-radius: 8px;
+    padding: 14px 12px;
     text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: rgb(119, 119, 119);
+    color: #8b949e;
+    font-style: italic;
+    margin-bottom: 10px;
 }
 
 .remove-player-button {
-    margin-top: 8px;
     padding: 5px 10px;
-    background-color: rgb(229, 57, 53);
+    background-color: #da3633;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0,1s;
+    transition: background-color 0.2s, transform 0.1s;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-left: 10px;
 }
 
 .remove-player-button:hover {
-    background-color: rgb(198, 40, 40);
+    background-color: #b42a29;
     transform: scale(1.05);
 }
